@@ -15,6 +15,7 @@ TBA
 - Jax (3036268218)
 - kevin (3036274059)
 - Sandy (3036222185)
+- Hugo (3036225577)
   
 
 ## Non-standard libraries used
