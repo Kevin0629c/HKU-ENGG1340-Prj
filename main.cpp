@@ -7,9 +7,8 @@ using namespace std;
 
 int main() {
     cout << termcolor::red << "Hello World! Press anything to continue" << endl;
-    char c;
-    c = getch();
+    char inputted_char = getch();
     clearScreen();
-    cout << "You pressed " << c << "!" << endl;
+    cout << "You pressed " << inputted_char << "!" << endl;
     return 0;
 }
