@@ -1,12 +1,15 @@
-#include <stdio.h>
+#include <iostream>
 #include <string>
-#include "terminalHelpers.h"
+#include "terminalHelpers.hpp"
+#include "termcolor.hpp"
+
 using namespace std;
 
 int main() {
-    printf("Hello World!\n");
-    char c = getch();
+    cout << termcolor::red << "Hello World!" << endl;
+    char c;
+    c = getch();
     clear_screen();
-    printf("You pressed %c!\n", c);
+    cout << "You pressed " << c << "!" << endl;
     return 0;
 }

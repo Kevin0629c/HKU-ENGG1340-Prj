@@ -20,4 +20,4 @@ TBA
 
 ## Non-standard libraries used
 
-TBA
+[termcolor.hpp](https://termcolor.readthedocs.io/#)
