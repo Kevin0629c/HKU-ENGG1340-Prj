@@ -4,7 +4,7 @@
 #include <unistd.h>
 using namespace std;
 
-void print_at(int x, int y, string c) {
+void printAt(int x, int y, string c) {
     // Save current cursor position
     cout << "\033[s";
     // Move cursor to x, y
@@ -15,7 +15,7 @@ void print_at(int x, int y, string c) {
     cout << "\033[u" << flush;
 }
 
-void clear_screen() {
+void clearScreen() {
     // CSI[2J clears screen, CSI[H moves the cursor to top-left corner
     cout << "\033[2J\033[H";
 }

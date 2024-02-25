@@ -6,10 +6,10 @@
 using namespace std;
 
 int main() {
-    cout << termcolor::red << "Hello World!" << endl;
+    cout << termcolor::red << "Hello World! Press anything to continue" << endl;
     char c;
     c = getch();
-    clear_screen();
+    clearScreen();
     cout << "You pressed " << c << "!" << endl;
     return 0;
 }
