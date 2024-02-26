@@ -1,10 +1,14 @@
+#ifndef TERMINALHELPERS_HPP
+#define TERMINALHELPERS_HPP
+
 #include <iostream>
 #include <string>
 #include <termios.h>
 #include <unistd.h>
 using namespace std;
 
-void printAt(int x, int y, string c) {
+void printAt(int x, int y, string c)
+{
     // Save current cursor position
     cout << "\033[s";
     // Move cursor to x, y
@@ -15,13 +19,15 @@ void printAt(int x, int y, string c) {
     cout << "\033[u" << flush;
 }
 
-void clearScreen() {
+void clearScreen()
+{
     // CSI[2J clears screen, CSI[H moves the cursor to top-left corner
     cout << "\033[2J\033[H";
 }
 
 // Get a single character from stdin without waiting for enter, by changing the terminal settings
-char getch() {
+char getch()
+{
     // get stdin file descriptor
     int file_desc = STDIN_FILENO;
     // get stdin file settings
@@ -38,3 +44,5 @@ char getch() {
     tcsetattr(file_desc, TCSANOW, &old_settings);
     return ch;
 }
+
+#endif
