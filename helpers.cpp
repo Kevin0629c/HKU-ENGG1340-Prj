@@ -1,6 +1,4 @@
-#ifndef TERMINALHELPERS_HPP
-#define TERMINALHELPERS_HPP
-
+#include "helpers.hpp"
 #include <iostream>
 #include <string>
 #include <termios.h>
@@ -44,5 +42,3 @@ char getch()
     tcsetattr(file_desc, TCSANOW, &old_settings);
     return ch;
 }
-
-#endif

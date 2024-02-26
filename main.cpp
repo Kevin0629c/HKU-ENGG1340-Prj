@@ -1,6 +1,6 @@
 #include <iostream>
 #include <string>
-#include "terminalHelpers.hpp"
+#include "helpers.hpp"
 #include "termcolor.hpp"
 #include "gameflow.hpp"
 

@@ -1,5 +1,5 @@
 #include "gameflow.hpp"
-#include "terminalHelpers.hpp"
+#include "helpers.hpp"
 #include "termcolor.hpp"
 using namespace std;
 
