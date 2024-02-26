@@ -5,21 +5,24 @@
 #include <string>
 using namespace std;
 
-class gameflow
+class Gameflow
 {
     int width;
     int height;
     int seed;
     int **map2D;
+    unordered_map<int, unordered_map<int, bool>> transfers;
 
 public:
-    gameflow(int theWidth, int theHeight, int theSeed); // Constructor
+    Gameflow(int theWidth, int theHeight, int theSeed); // Constructor
 
     void startGame();
     void printGame();
     void endGame();
+    void kruskalize();
+    void printTransfers();
 
-    ~gameflow(); // Destructor
+    ~Gameflow(); // Destructor
 };
 
 #endif
