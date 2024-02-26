@@ -18,6 +18,8 @@ public:
     void startGame();
     void printGame();
     void endGame();
+
+    ~gameflow(); // Destructor
 };
 
 #endif

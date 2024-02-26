@@ -3,6 +3,7 @@
 #include "termcolor.hpp"
 using namespace std;
 
+/* ----------- Constructor ---------- */
 gameflow::gameflow(int theWidth, int theHeight, int theSeed)
 {
     width = theWidth;
@@ -16,6 +17,7 @@ gameflow::gameflow(int theWidth, int theHeight, int theSeed)
     }
 }
 
+/* ------------ Functions ----------- */
 void gameflow::printGame()
 {
     for (int i = 0; i < width; ++i)
@@ -26,4 +28,14 @@ void gameflow::printGame()
         }
         cout << endl;
     }
+}
+
+/* ----------- Destructor ----------- */
+gameflow::~gameflow()
+{
+    for (int i = 0; i < width; ++i)
+    {
+        delete[] map2D[i];
+    }
+    delete[] map2D;
 }
