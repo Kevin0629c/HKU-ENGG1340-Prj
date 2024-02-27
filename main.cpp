@@ -12,7 +12,8 @@ int main()
     // char inputted_char = getch();
     // clearScreen();
     // cout << "You pressed " << inputted_char << "!" << endl;
-    Gameflow newGame(10, 10, 0);
+
+    Gameflow newGame(20, 15, 0);
     cout << "END" << endl;
     return 0;
 }

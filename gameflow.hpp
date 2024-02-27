@@ -6,6 +6,23 @@
 // #include <unordered_map>
 using namespace std;
 
+template <typename T>
+class Map2D {
+public:
+    Map2D(int width, int height) : width_(width), height_(height) {
+        data_.resize(width_, std::vector<T>(height_));
+    }
+
+    T& operator()(int row, int col) {
+        return data_[row][col];
+    }
+
+private:
+    int width_;
+    int height_;
+    std::vector<std::vector<T>> data_;
+};
+
 class Gameflow
 {
 
