@@ -1,6 +1,4 @@
 #include "gameflow.hpp"
-// #include "helpers.hpp"
-// #include "termcor.hpp"
 #include "disjoint.hpp"
 #include "colors.hpp"
 
@@ -9,7 +7,6 @@
 #include <random>
 #include <unordered_map>
 #include <algorithm>
-#include <unordered_map>
 #include <sstream>
 
 using namespace std;
@@ -21,6 +18,8 @@ Gameflow::Gameflow(int theWidth, int theHeight, int theSeed)
     width = theWidth / 2;
     height = theHeight / 2;
     seed = theSeed;
+    result_width = width * 2 + 1;
+    result_height = height * 2 + 1;
 
     // create the 2D array for the MST algorithm
    grid2D = new int*[height];
@@ -35,9 +34,9 @@ Gameflow::Gameflow(int theWidth, int theHeight, int theSeed)
         }
     }
     
-    map2D = new int*[height * 2 + 1];
-    for (int i = 0; i < height * 2 + 1; i++) {
-        map2D[i] = new int[width * 2 + 1];
+    map2D = new int*[result_height];
+    for (int i = 0; i < result_height; i++) {
+        map2D[i] = new int[result_width];
     }
 
     glyphs = {
@@ -46,18 +45,18 @@ Gameflow::Gameflow(int theWidth, int theHeight, int theSeed)
         {1, "  "},                                                 // space
         {0, "██"},                                                 // wall
         {2, COLOR_YELLOW + "⟋⟋" + COLOR_DEFAULT},                  // end
-        {3, COLOR_MAGENTA + COLOR_BG_WHITE + "❂❂" + COLOR_DEFAULT} // portal
+        {3, COLOR_BG_MAGENTA + COLOR_WHITE + "❂❂" + COLOR_DEFAULT} // portal
     };
 
     for (int i = 0; i < height; i++) {
         for (int j = 0; j < width; j++) {
-            std::cout << grid2D[i][j] << " ";
+            cout << grid2D[i][j] << " ";
         }
-        std::cout << std::endl;
+        cout << endl;
     }
 
     kruskalize();
-    printTransfers();
+    // printTransfers();
     generateMaze();
     printGame();
     
@@ -66,9 +65,9 @@ Gameflow::Gameflow(int theWidth, int theHeight, int theSeed)
 /* -------------- Utils ------------- */
 void Gameflow::printGame()
 {
-    for (int r = 0; r < height * 2 + 1; ++r)
+    for (int r = 0; r < result_height; ++r)
     {
-        for (int c = 0; c < width * 2 + 1; ++c)
+        for (int c = 0; c < result_width; ++c)
         {
             cout << glyphs[map2D[r][c]];
             // cout << map2D[r][c];
@@ -106,6 +105,11 @@ Gameflow::~Gameflow()
 
 void Gameflow::generateMaze()
 {
+    /*
+    To translate generated "transfers" into a 2D array, 
+    we loop through grid2D and transfers, then create 2 rows 
+    based on the data in those variables per iteration of the loop.
+    */
     int bC, bR;
     bR = 0;
 
@@ -150,6 +154,64 @@ void Gameflow::generateMaze()
         }
         map2D[bR][bC] = 0;
     }
+
+    /*
+    Then we assign random end points as well as
+    minigame portals to the 2D array.
+    */
+
+    random_device rd; 
+    mt19937 g(rd()); // g is a random number generator, not a random number
+
+    int exit_col, exit_row;
+    while (true) {
+        exit_col = g() % (width / 2 + 1) + width / 2; // generate numbers
+        exit_row = g() % (height ) + 1;
+            if (g() % 2 + 1 == 1) { // flip a coin to decide if the exit should be at the bottom or right edge
+                if (map2D[exit_row][result_width - 2] == 1) { // checks if the position is a valid exit position
+                    map2D[exit_row][result_width - 1] = 2; 
+                    break;
+                } else if (map2D[result_height - 2][exit_col] == 1) {
+                    map2D[result_height - 1][exit_col] = 2; 
+                    break;
+                }
+            }
+        }
+
+   int portal_edge_margin = 2;
+   float portal_rate = 0.4;
+
+   vector<pair<int, int> > portal_candidates;
+    for (int r = portal_edge_margin; r < result_height - portal_edge_margin; ++r) {
+        for (int c = portal_edge_margin; c < result_width - portal_edge_margin; ++c) {
+            int checking = map2D[r][c];
+            if (checking == 1) {
+                int wall_count = 0;
+                vector<int> neighbors = {map2D[r][c+1], map2D[r][c-1], map2D[r+1][c], map2D[r-1][c]};
+                for (int v : neighbors) {
+                    if (v == 0) {
+                        ++wall_count;
+                    }
+                }
+                if (wall_count >= 3) {
+                    portal_candidates.push_back(make_pair(r, c));
+                    // cout << r << " " << c << endl;
+                }
+            }
+        }
+    }
+
+    int num_portals = static_cast<int>(portal_candidates.size() * portal_rate);
+
+    // Note: shuffle takes a random number generator as a third argument
+    shuffle(portal_candidates.begin(), portal_candidates.end(), g); // shuffle the candidates
+    vector<pair<int, int> > portals(portal_candidates.begin(), portal_candidates.begin() + num_portals); // first n elements of the candidiates
+
+    for (auto pos : portals) {
+        map2D[pos.first][pos.second] = 3;
+    }
+   
+
 }
 
 void Gameflow::kruskalize()
@@ -236,32 +298,4 @@ void Gameflow::kruskalize()
             disjoint_set.union_sets(set_a, set_b);
         }
     }
-
-    // transfers = {
-    // {0, { {1, true}, {5, true} }},
-    // {1, { {0, true} }},
-    // {2, { {3, true} }},
-    // {3, { {8, true}, {2, true}, {4, true} }},
-    // {4, { {9, true}, {3, true} }},
-    // {5, { {10, true}, {0, true} }},
-    // {6, { {11, true}, {7, true} }},
-    // {7, { {8, true}, {6, true}, {12, true} }},
-    // {8, { {7, true}, {3, true} }},
-    // {9, { {4, true}, {14, true} }},
-    // {10, { {15, true}, {11, true}, {5, true} }},
-    // {11, { {6, true}, {16, true}, {10, true} }},
-    // {12, { {7, true}, {13, true} }},
-    // {13, { {12, true} }},
-    // {14, { {19, true}, {9, true} }},
-    // {15, { {10, true}, {20, true} }},
-    // {16, { {11, true}, {21, true} }},
-    // {17, { {18, true} }},
-    // {18, { {19, true}, {17, true} }},
-    // {19, { {14, true}, {18, true}, {24, true} }},
-    // {20, { {15, true} }},
-    // {21, { {16, true} }},
-    // {22, { {23, true} }},
-    // {23, { {22, true}, {24, true} }},
-    // {24, { {19, true}, {23, true} }}
-// };
 }

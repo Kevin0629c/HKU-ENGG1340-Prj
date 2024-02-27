@@ -26,19 +26,22 @@ private:
 class Gameflow
 {
 
+    /* ------------- Params ------------- */
     int width;
     int height;
     int seed;
-    int **map2D;
 
     unordered_map<int, string> glyphs;
-
+    /* --------------- Gen -------------- */
     int **grid2D;
     unordered_map<int, unordered_map<int, bool> > transfers;
 
 public:
     Gameflow(int theWidth, int theHeight, int theSeed); // Constructor
 
+    int **map2D;
+    int result_width;
+    int result_height;
     void startGame();
     void printGame();
     void printTransfers();
