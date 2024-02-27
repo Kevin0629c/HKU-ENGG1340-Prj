@@ -44,13 +44,13 @@ char getch()
     return ch;
 }
 
-char getWinRows() {
+int getWinRows() {
     struct winsize size;
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &size);
     return size.ws_row;
 }
 
-char getWinCols() {
+int getWinCols() {
     struct winsize size;
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &size);
     return size.ws_col;
