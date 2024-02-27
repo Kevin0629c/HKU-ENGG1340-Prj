@@ -48,15 +48,7 @@ Maze2D::Maze2D(int theWidth, int theHeight, int theSeed)
         {3, COLOR_BG_MAGENTA + COLOR_WHITE + "❂❂" + COLOR_DEFAULT} // portal
     };
 
-    for (int i = 0; i < height; i++) {
-        for (int j = 0; j < width; j++) {
-            cout << grid2D[i][j] << " ";
-        }
-        cout << endl;
-    }
-
     kruskalize();
-    // printTransfers();
     generateMaze();
     
 }
