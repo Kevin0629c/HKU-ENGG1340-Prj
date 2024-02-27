@@ -1,7 +1,6 @@
 #include <iostream>
 #include <string>
 #include "helpers.hpp"
-#include "termcolor.hpp"
 #include "maze2D.hpp"
 
 using namespace std;
@@ -15,6 +14,5 @@ int main()
 
     Maze2D maze(20, 15, 0);
     maze.printGame();
-    cout << "END" << endl;
     return 0;
 }

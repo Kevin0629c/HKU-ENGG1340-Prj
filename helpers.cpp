@@ -2,6 +2,7 @@
 #include <iostream>
 #include <string>
 #include <termios.h>
+#include <sys/ioctl.h>
 #include <unistd.h>
 using namespace std;
 
@@ -41,4 +42,16 @@ char getch()
     // set the stdin settings back to before raw modification
     tcsetattr(file_desc, TCSANOW, &old_settings);
     return ch;
+}
+
+char getWinRows() {
+    struct winsize size;
+    ioctl(STDOUT_FILENO, TIOCGWINSZ, &size);
+    return size.ws_row;
+}
+
+char getWinCols() {
+    struct winsize size;
+    ioctl(STDOUT_FILENO, TIOCGWINSZ, &size);
+    return size.ws_col;
 }

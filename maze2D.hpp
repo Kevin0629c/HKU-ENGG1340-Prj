@@ -25,11 +25,18 @@ class Maze2D
 public:
     Maze2D(int theWidth, int theHeight, int theSeed); // Constructor TODO: GLYPHS
 
+    /* ------------- Params ------------- */
+    unordered_map<int, string> glyphs;  
     /* ------------ Info data ----------- */
-    unordered_map<int, string> glyphs;
-    int result_width;
-    int result_height;
-    int **map2D;
+    int **map2D; // 2D array of maze, represented by integers. 
+        // 0 is wall
+        // 1 is space
+        // 2 is end
+        // 3 is portal
+        // 9 is player
+        // 8 is tail
+    int result_width; // width of maze printed
+    int result_height; // height of maze printed
 
     /* ------------ Functions ----------- */
     void printGame();

@@ -19,5 +19,3 @@ TBA
 - Kim (3036226789)
 
 ## Non-standard libraries used
-
-[termcolor.hpp](https://termcolor.readthedocs.io/#)
