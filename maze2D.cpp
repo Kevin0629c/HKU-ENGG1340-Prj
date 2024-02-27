@@ -1,4 +1,4 @@
-#include "gameflow.hpp"
+#include "maze2D.hpp"
 #include "disjoint.hpp"
 #include "colors.hpp"
 
@@ -13,13 +13,13 @@ using namespace std;
 
 
 /* ----------- Constructor ---------- */
-Gameflow::Gameflow(int theWidth, int theHeight, int theSeed)
+Maze2D::Maze2D(int theWidth, int theHeight, int theSeed)
 {
     width = theWidth / 2;
     height = theHeight / 2;
     seed = theSeed;
-    result_width = width * 2 + 1;
-    result_height = height * 2 + 1;
+    result_width = theWidth + 1;
+    result_height = theHeight;
 
     // create the 2D array for the MST algorithm
    grid2D = new int*[height];
@@ -58,12 +58,11 @@ Gameflow::Gameflow(int theWidth, int theHeight, int theSeed)
     kruskalize();
     // printTransfers();
     generateMaze();
-    printGame();
     
 }
 
 /* -------------- Utils ------------- */
-void Gameflow::printGame()
+void Maze2D::printGame()
 {
     for (int r = 0; r < result_height; ++r)
     {
@@ -76,7 +75,7 @@ void Gameflow::printGame()
     }
 }
 
-void Gameflow::printTransfers()
+void Maze2D::printTransfers()
 {
     for (auto const &x : transfers)
     {
@@ -90,7 +89,7 @@ void Gameflow::printTransfers()
 }
 
 /* ----------- Destructor ----------- */
-Gameflow::~Gameflow()
+Maze2D::~Maze2D()
 {
     for (int c = 0; c < height; ++c)
     {
@@ -103,7 +102,7 @@ Gameflow::~Gameflow()
 
 /* ----------- Generators ----------- */
 
-void Gameflow::generateMaze()
+void Maze2D::generateMaze()
 {
     /*
     To translate generated "transfers" into a 2D array, 
@@ -214,7 +213,7 @@ void Gameflow::generateMaze()
 
 }
 
-void Gameflow::kruskalize()
+void Maze2D::kruskalize()
 {
     // edge = ((r1, c1), (r2, c2)) such that grid[r][c] = key
     vector<pair<pair<int, int>, pair<int, int>>> edges_ordered;

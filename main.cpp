@@ -2,7 +2,7 @@
 #include <string>
 #include "helpers.hpp"
 #include "termcolor.hpp"
-#include "gameflow.hpp"
+#include "maze2D.hpp"
 
 using namespace std;
 
@@ -13,7 +13,8 @@ int main()
     // clearScreen();
     // cout << "You pressed " << inputted_char << "!" << endl;
 
-    Gameflow newGame(20, 15, 0);
+    Maze2D maze(20, 15, 0);
+    maze.printGame();
     cout << "END" << endl;
     return 0;
 }
