@@ -54,7 +54,7 @@ Maze2D::Maze2D(int theWidth, int theHeight, int theSeed)
 }
 
 /* -------------- Utils ------------- */
-void Maze2D::printGame()
+void Maze2D::printMap()
 {
     for (int r = 0; r < result_height; ++r)
     {

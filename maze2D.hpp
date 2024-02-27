@@ -39,7 +39,7 @@ public:
     int result_height; // height of maze printed
 
     /* ------------ Functions ----------- */
-    void printGame();
+    void printMap();
 
     ~Maze2D(); // Destructor
 };
