@@ -6,14 +6,20 @@
 #include <unistd.h>
 using namespace std;
 
-void printAt(int x, int y, string c)
+/*
+    Print a string at a specific position on the terminal
+    x: x coordinate
+    y: y coordinate
+    s: string to print
+*/
+void printAt(int x, int y, string s)
 {
     // Save current cursor position
     cout << "\033[s";
     // Move cursor to x, y
     cout << "\033[" << y << ";" << x << "H";
     // Print character
-    cout << c;
+    cout << s;
     // Restore saved cursor position
     cout << "\033[u" << flush;
 }
@@ -24,7 +30,10 @@ void clearScreen()
     cout << "\033[2J\033[H";
 }
 
-// Get a single character from stdin without waiting for enter, by changing the terminal settings
+/*
+    Get a single character from stdin without waiting for enter, by changing the terminal settings
+    Returns the character read
+*/
 char getch()
 {
     // get stdin file descriptor
@@ -44,12 +53,20 @@ char getch()
     return ch;
 }
 
+/*
+    Get the number of rows in the terminal
+    Returns the number of rows
+*/
 int getWinRows() {
     struct winsize size;
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &size);
     return size.ws_row;
 }
 
+/*
+    Get the number of columns in the terminal
+    Returns the number of columns
+*/
 int getWinCols() {
     struct winsize size;
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &size);

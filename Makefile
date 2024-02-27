@@ -3,7 +3,7 @@ flags = -pedantic-errors -std=c++11
 %.o: %.cpp %.hpp
 	g++ $(flags) -c $< -o $@
 
-game: main.o maze2D.o helpers.o disjoint.o
+game: main.o maze2D.o helpers.o disjoint.o gameloop.o pagedmenu.o
 	g++ $(flags) $^ -o $@
 
 clean:
