@@ -67,6 +67,11 @@ void Maze2D::printMap()
     }
 }
 
+void Maze2D::editMap(int r, int c, int value)
+{
+    map2D[r][c] = value;
+}
+
 void Maze2D::printTransfers()
 {
     for (auto const &x : transfers)

@@ -40,6 +40,7 @@ public:
 
     /* ------------ Functions ----------- */
     void printMap();
+    void editMap(int r, int c, int value);
 
     ~Maze2D(); // Destructor
 };
