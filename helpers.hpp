@@ -5,6 +5,8 @@
 
 void printAt(int, int, std::string);
 void clearScreen();
+int getWinRows();
+int getWinCols();
 char getch();
 
 #endif
