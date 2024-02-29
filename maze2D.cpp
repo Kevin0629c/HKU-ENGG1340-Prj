@@ -15,17 +15,17 @@ using namespace std;
 /* ----------- Constructor ---------- */
 Maze2D::Maze2D(int theWidth, int theHeight, int theSeed)
 {
-    width = theWidth / 2;
-    height = theHeight / 2;
-    seed = theSeed;
-    result_width = theWidth + 1;
-    result_height = theHeight;
+        width = theWidth / 2 ;
+        height = theHeight / 2;
+        seed = theSeed;
+        result_width = (theWidth % 2 == 0 ? theWidth + 1 : theWidth);
+        result_height = theHeight;
 
-    // create the 2D array for the MST algorithm
-   grid2D = new int*[height];
-    for (int i = 0; i < height; i++) {
-        grid2D[i] = new int[width];
-    }
+        // create the 2D array for the MST algorithm
+       grid2D = new int*[height];
+        for (int i = 0; i < height; i++) {
+            grid2D[i] = new int[width];
+        }
 
     // Initialize the array
     for (int i = 0; i < height; i++) {

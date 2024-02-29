@@ -9,11 +9,14 @@ using namespace std;
 int main()
 {
     // check terminal size
-    if (getWinRows() < 50 || getWinCols() < 20)
+    if (getWinRows() < 0 || getWinCols() < 0)
     {
         cout << "Terminal size too small. Please resize to at least 50x20." << endl;
         return 1;
     }
+
+    Gameloop game(0);
+    int game_result = game.run();
 
     /*
     while (true) {
@@ -24,7 +27,7 @@ int main()
         } else {
             Gameloop game(response);
         }
-        game_result = game.run()
+        int game_result = game.run()
         if (game_result == -1) {
             // quit game
         } else if (game_result == 0) {
