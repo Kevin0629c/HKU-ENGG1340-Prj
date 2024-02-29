@@ -213,7 +213,7 @@ void Maze2D::generateMaze()
 void Maze2D::kruskalize()
 {
     // edge = ((r1, c1), (r2, c2)) such that grid[r][c] = key
-    vector<pair<pair<int, int>, pair<int, int>>> edges_ordered;
+    vector<pair<pair<int, int>, pair<int, int> > > edges_ordered;
 
     // First add all neighboring edges into a list
     for (int r = 0; r < height; ++r)
@@ -223,7 +223,7 @@ void Maze2D::kruskalize()
             pair<int, int> cell = make_pair(c, r);
             pair<int, int> left_cell = make_pair(c - 1, r);
             pair<int, int> down_cell = make_pair(c, r - 1);
-            vector<pair<pair<int, int>, pair<int, int>>> near;
+            vector<pair<pair<int, int>, pair<int, int> > > near;
 
             // if not a boundary cell, add edge, else ignore
             if (c > 0)
@@ -240,7 +240,7 @@ void Maze2D::kruskalize()
 
     // seed the random value
     srand(seed);
-    vector<pair<pair<int, int>, pair<int, int>>> edges;
+    vector<pair<pair<int, int>, pair<int, int> > > edges;
 
     // shuffle the ordered edges randomly into a new list
     while (!edges_ordered.empty())
