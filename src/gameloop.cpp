@@ -48,11 +48,10 @@ void Timer::job() {
     auto start_time = chrono::system_clock::now() - chrono::duration<double>(paused_time);
     while (is_running) {
         if (!*is_writing) {
-            auto time_elapsed = chrono::system_clock::now() - start_time;
-                // cout << "time: " << time_elapsed.count() << " | " << time_elapsed.count() - time << endl;
-                if (time_elapsed.count() - time > 10000) {
-                    time = time_elapsed.count();
-                    cout << "\033[" << timer_row << ";" << timer_col << "H[" << std::fixed << std::setprecision(2) << to_string(time / 1000000).substr(0, 5) << "s]" << flush;
+            chrono::duration<float> time_elapsed_seconds = chrono::system_clock::now() - start_time;
+                if (time_elapsed_seconds.count() - time > 0) {
+                    time = time_elapsed_seconds.count();
+                    cout << "\033[" << timer_row << ";" << timer_col << "H[" << fixed << setprecision(2) << time << "s]" << flush;
                 }
         }
     }

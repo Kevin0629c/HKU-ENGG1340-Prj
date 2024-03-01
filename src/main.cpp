@@ -3,6 +3,7 @@
 #include "helpers.hpp"
 #include "gameloop.hpp"
 #include "pagedmenu.hpp"
+#include <chrono>
 
 using namespace std;
 
