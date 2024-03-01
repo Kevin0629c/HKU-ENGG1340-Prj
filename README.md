@@ -25,5 +25,3 @@ make
 - Kim (3036226789)
 
 ## Non-standard libraries used
-
-[miniaudio.h](https://github.com/mackron/miniaudio): Used for sound effects in the background
