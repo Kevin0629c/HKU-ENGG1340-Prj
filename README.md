@@ -8,7 +8,13 @@ TBA
 
 TBA
 
-## Compilation instructions
+## Compilation and running instructions
+
+```zsh
+cd build
+make
+./game
+```
 
 ## Group Members
 
