@@ -25,7 +25,7 @@ void Timer::start() {
 
 void Timer::pause() {
     is_running = false;
-    paused_time = time / 1000000;
+    paused_time = time;
     stop();
 }
 
