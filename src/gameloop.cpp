@@ -77,7 +77,7 @@ int Gameloop::run()
     // cout << "winCols: " << winCols << endl;
     // cout << "winRows: " << winRows << endl;
     clearScreen();
-    Maze2D maze(winCols / 2 - 2, winRows - 2, 0);
+    Maze2D maze(winCols / 2 - 2, (winRows % 2 == 0 ? winRows + 1 : winRows ) - 2, 0);
     maze.printMap();
     bool is_writing = false;
     Timer timer(&is_writing, 0, 0);
@@ -88,6 +88,9 @@ int Gameloop::run()
     timer.start();
     this_thread::sleep_for(chrono::seconds(1));
     timer.stop();
+
+    clearScreen();
+    cout << "Maze dimension in chars: " << maze.result_width << "x" << maze.result_height << endl;
     
     return 0;
 }

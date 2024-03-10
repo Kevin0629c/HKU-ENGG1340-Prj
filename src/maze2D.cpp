@@ -15,7 +15,7 @@ using namespace std;
 /* ----------- Constructor ---------- */
 Maze2D::Maze2D(int theWidth, int theHeight, int theSeed)
 {
-        width = theWidth / 2 ;
+        width = theWidth / 2 ; // divide by 4 as each cell has 2 chars, and the alogrithm takes in half the dimension
         height = theHeight / 2;
         seed = theSeed;
         result_width = (theWidth % 2 == 0 ? theWidth + 1 : theWidth);
