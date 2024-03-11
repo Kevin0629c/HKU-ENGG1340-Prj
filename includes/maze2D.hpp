@@ -37,7 +37,7 @@ public:
         // 8 is tail
     int result_width; // width of maze printed
     int result_height; // height of maze printed
-
+    
     /* ------------ Functions ----------- */
     void printMap();
     void editMap(int r, int c, int value);
