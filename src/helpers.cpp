@@ -6,6 +6,14 @@
 #include <unistd.h>
 using namespace std;
 
+void cursorHide() {
+    cout << "\033[?25l";
+}
+
+void cursorShow() {
+    cout << "\033[?25h";
+}
+
 /*
     Print a string at a specific position on the terminal
     x: x coordinate

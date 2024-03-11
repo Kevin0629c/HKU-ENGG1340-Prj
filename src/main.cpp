@@ -3,7 +3,6 @@
 #include "helpers.hpp"
 #include "gameloop.hpp"
 #include "pagedmenu.hpp"
-#include "colors.hpp"
 #include <chrono>
 
 using namespace std;
@@ -17,7 +16,7 @@ int main()
         return 1;
     }
 
-    cout << CURSOR_HIDE;
+    cursorHide();
 
     Gameloop game(0);
     int game_result = game.run();
@@ -42,7 +41,7 @@ int main()
     }
     */
 
-   cout << CURSOR_SHOW;
+   cursorShow();
 
     return 0;
 }

@@ -2,9 +2,6 @@
 #define COLORS_HPP_
 #include <string>
 
-const string CURSOR_HIDE = "\033[?25l";
-const string CURSOR_SHOW = "\033[?25h";
-
 const string COLOR_DEFAULT = "\033[0m";
 // foreground colors (text)
 const string COLOR_BLACK = "\033[30m";
