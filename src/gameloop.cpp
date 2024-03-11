@@ -64,6 +64,12 @@ void Timer::job() {
 
 Gameloop::Gameloop(int theGame_mode)
 {
+    lookup = {
+        {char('w'), {0, -1}},
+        {char('a'), {-1, 0}},
+        {char('s'), {0, 1}},
+        {char('d'), {1, 0}},
+    };
     game_mode = theGame_mode;
 }
 
@@ -86,55 +92,15 @@ int Gameloop::run()
     while (true)
     {
         input = getch();
-        switch (input)
-        {
-        case 'w':
-            if ( maze.map2D[position[0]-1][position[1]] != 0 ){
-                printAt( 2*position[1], position[0], maze.glyphs[8]); 
-                cout << position[0] << "," << position[1] << endl;
-                maze.editMap(position[0], position[1], 8);
-                position[0]--;
-                printAt( 2*position[1], position[0], maze.glyphs[9]);
-                cout << position[0] << "," << position[1] << endl;
-                maze.editMap(position[0], position[1], 9);
-            }
-            break;
-        case 's':
-            if ( maze.map2D[position[0]+1][position[1]] != 0 ){
-                printAt( 2*position[1], position[0], maze.glyphs[8]); 
-                cout << position[0] << "," << position[1] << endl;
-                maze.editMap(position[0], position[1], 8);
-                position[0]++;
-                printAt( 4, 1, maze.glyphs[9]);
-                cout << position[0] << "," << position[1] << endl;
-                maze.editMap(position[0], position[1], 9);
-            }
-            break;
-        case 'a':
-            if ( maze.map2D[position[0]][position[1]-1] != 0 ){
-                printAt( 2*position[1], position[0], maze.glyphs[8]); 
-                cout << position[0] << "," << position[1] << endl;
-                maze.editMap(position[0], position[1], 8);
-                position[1]--;
-                printAt( 2*position[1], position[0], maze.glyphs[9]);
-                cout << position[0] << "," << position[1] << endl;
-                maze.editMap(position[0], position[1], 9);
-            }
-            break;
-        case 'd':
-            if ( maze.map2D[position[0]][position[1]+1] != 0 ){
-                printAt( 2*position[1], position[0], maze.glyphs[8]); 
-                cout << position[0] << "," << position[1] << endl;
-                maze.editMap(position[0], position[1], 8);
-                position[1]++;
-                printAt( 2*position[1], position[0], maze.glyphs[9]);
-                cout << position[0] << "," << position[1] << endl;
-                maze.editMap(position[0], position[1], 9);
-            }
-            break;
-        default:
-            break;
+        if ( maze.map2D[position[0] + lookup[input][1]][position[1] + lookup[input][0]] != 0 ){
+            printAt( 2*position[1], position[0], maze.glyphs[8]); 
+            maze.editMap(position[0], position[1], 8);
+            position[0] = position[0] + lookup[input][1];
+            position[1] = position[1] + lookup[input][0];
+            printAt( 2*position[1], position[0], maze.glyphs[9]);
+            maze.editMap(position[0], position[1], 9);
         }
+        
     }
     bool is_writing = false;
     Timer timer(&is_writing, 0, 0);

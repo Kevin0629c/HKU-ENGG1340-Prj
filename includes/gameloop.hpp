@@ -2,7 +2,7 @@
 #define GAMELOOP_HPP_
 #include <thread>
 #include <string>
-
+#include <unordered_map>
 using namespace std;
 
 class Timer
@@ -23,35 +23,13 @@ public:
     string stop();
 };
 
-class Movement
-{
-    int width;
-    int height;
-    int playerW;
-    int playerA;
-    int playerS;
-    int playerD;
-    int preplayerx;
-    int preplayery;
-    int endx;
-    int endy;
-public:
-    Movement(int **themap, int result_width, int result_height);
-    ~Movement();
-    string themove;
-    int **maze1;
-    int playerx;
-    int playery;
-    void playerloc();
-    void playerinput();
-    bool endgame();
-    void phymove(string themove);
-};
+
 
 class Gameloop
 {
     int game_mode;
 public:
+    unordered_map<char, array<int,2>> lookup; 
     Gameloop(int theGame_mode);
     ~Gameloop();
     int run();

@@ -25,7 +25,7 @@ void printAt(int x, int y, string s)
     // Save current cursor position
     cout << "\033[s";
     // Move cursor to x, y
-    cout << "\033[" << y << ";" << x << "H";
+    cout << "\033[" << y +1 << ";" << x +1 << "H";
     // Print character
     cout << s;
     // Restore saved cursor position
