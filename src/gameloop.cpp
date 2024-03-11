@@ -91,12 +91,19 @@ int Gameloop::run()
     maze.map2D;
     while (true)
     {
-        input = getch();
+        char input = getch();
         if ( maze.map2D[position[0] + lookup[input][1]][position[1] + lookup[input][0]] != 0 ){
             printAt( 2*position[1], position[0], maze.glyphs[8]); 
             maze.editMap(position[0], position[1], 8);
             position[0] = position[0] + lookup[input][1];
             position[1] = position[1] + lookup[input][0];
+            if (maze.map2D[position[0]][position[1]] == 2){
+                cout << "you win the game" << endl;
+                break;
+            }
+            if (maze.map2D[position[0]][position[1]] == 3){
+                
+            }
             printAt( 2*position[1], position[0], maze.glyphs[9]);
             maze.editMap(position[0], position[1], 9);
         }
