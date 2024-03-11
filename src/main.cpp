@@ -3,6 +3,7 @@
 #include "helpers.hpp"
 #include "gameloop.hpp"
 #include "pagedmenu.hpp"
+#include "colors.hpp"
 #include <chrono>
 
 using namespace std;
@@ -15,6 +16,8 @@ int main()
         cout << "Terminal size too small. Please resize to at least 50x20." << endl;
         return 1;
     }
+
+    cout << CURSOR_HIDE;
 
     Gameloop game(0);
     int game_result = game.run();
@@ -38,5 +41,8 @@ int main()
         }
     }
     */
+
+   cout << CURSOR_SHOW;
+
     return 0;
 }
