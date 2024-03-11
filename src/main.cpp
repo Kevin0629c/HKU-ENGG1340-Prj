@@ -16,6 +16,8 @@ int main()
         return 1;
     }
 
+    cursorHide();
+
     Gameloop game(0);
     int game_result = game.run();
 
@@ -38,5 +40,8 @@ int main()
         }
     }
     */
+
+   cursorShow();
+
     return 0;
 }

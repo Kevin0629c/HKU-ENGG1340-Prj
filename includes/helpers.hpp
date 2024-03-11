@@ -3,6 +3,8 @@
 
 #include <string>
 
+void cursorHide();
+void cursorShow();
 void printAt(int, int, std::string);
 void clearScreen();
 int getWinRows();
