@@ -20,7 +20,7 @@ int main()
 
     Gameloop game(0);
     int game_result = game.run();
-    while (true) {
+    while (true) {                      //Linkage with pagedmenu setting requried
             PagedMenu menu(menu_data);
             int response = menu.displayMenu()
             if (response == -1) {
