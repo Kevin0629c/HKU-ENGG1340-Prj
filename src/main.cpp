@@ -20,7 +20,26 @@ int main()
 
     Gameloop game(0);
     int game_result = game.run();
-
+    while (true) {
+            PagedMenu menu(menu_data);
+            int response = menu.displayMenu()
+            if (response == -1) {
+                return 0;
+            } else {
+                Gameloop game(response);
+            }
+            int game_result = game.run()
+            if (game_result == -1) {
+                return 0;
+                // quit game
+            } else if (game_result == 0) {
+                cout << "You LOSE!!!" << endl
+                // lost
+            } else {
+                cout << "You WIN!!!" << endl
+                // won
+            }
+        }
     /*
     while (true) {
         PagedMenu menu(menu_data);
@@ -39,9 +58,7 @@ int main()
             // won
         }
     }
+    cursorShow();
     */
-
-   cursorShow();
-
     return 0;
 }
