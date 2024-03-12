@@ -34,22 +34,27 @@ int PagedMenu::displayMenu()
 
         
     cout << "╔";
-    for (int i = 0; i < winCols - 2; i++) {
+    for (int i = 0; i < winCols - 2; i++) 
+    {
         cout << "═";
     }
     cout << "╗" << endl;
 
-    cout << " PLAY   P   Quit  " << endl;
+    cout << "PLAY" << endl;
+    cout << "QUIT" << endl;
 
-    for (int i = 1; i < winRows - 2; i++) {
-        for (int j = 1; j < winRows - 2; j++){
+    for (int i = 1; i < winRows - 2; i++) 
+    {
+        for (int j = 1; j < winRows - 2; j++)
+        {
                 cout << " ";
         }
     cout<< endl;
     }
 
     cout << "╚";
-    for (int i = 0; i < winCols - 2; i++) {
+    for (int i = 0; i < winCols - 2; i++) 
+    {
         cout << "═";
     }
     cout << "╝" << endl;
@@ -99,12 +104,14 @@ int PagedMenu::displayMenu()
 
     char userinput;
     userinput = getch();
-    if (userinput == 'A' || userinput == 'a'){
-        printAt(1,1,"PLAY");
+    if (userinput == 'A' || userinput == 'a')
+    {
+        printAt(0,1,"PLAY");
         response = 1;
     }
-    else if (userinput == 'D' || userinput == 'd'){
-        printAt(12,1,"QUIT");
+    else if (userinput == 'D' || userinput == 'd')
+    {
+        printAt(0,2,"QUIT");
         response = 0;
     }
     return response;
