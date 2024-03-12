@@ -22,29 +22,37 @@ int PagedMenu::displayMenu()
     int winCols = getWinCols();
     int winRows = getWinRows();
 
-    int size_w = 60 , size_h = 20;
-    int selected = 1;            //input value dont know what is this
-    int option_count = 5;             //(just for sub sth misssing dont use this as last result)
-    int title_pos = (option_count == 0) ? size_h * 0.5 - 1 : size_h * 0.35;
     using namespace std; // Add this line to specify the namespace for "cout"
 
-    string title = "Hello";            //list(menu_data.keys())[0] how to do this 
+    //int size_w = 60 , size_h = 20;
+    //int selected = 1;            //input value dont know what is this
+    //int option_count = 5;             //(just for sub sth misssing dont use this as last result)
+    //int title_pos = (option_count == 0) ? size_h * 0.5 - 1 : size_h * 0.35;
+    //string title = "Hello";            //list(menu_data.keys())[0] how to do this 
 
     system("clear");
 
         
-    std::cout << "╔"; // Specify the namespace for "cout"
+    cout << "╔";
+    for (int i = 0; i < winCols - 2; i++) {
+        cout << "═";
+    }
+    cout << "╗" << endl;
 
-    for (int i = 0; i < winCols - 2; i++)
-    {
-        std::cout << "═"; // Specify the namespace for "cout"
+    cout << " PLAY   P   Quit  " << endl;
+
+    for (int i = 1; i < winRows - 2; i++) {
+        for (int j = 1; j < winRows - 2; j++){
+                cout << " ";
+        }
+    cout<< endl;
     }
 
-    std::cout << "╗" << endl; // Specify the namespace for "cout"
-
-    std::cout << "║" << "PLAY"<< "  " << "P"<< "Quit"<< "  " ;
-
-    std::cout << "║" << endl; 
+    cout << "╚";
+    for (int i = 0; i < winCols - 2; i++) {
+        cout << "═";
+    }
+    cout << "╝" << endl;
 
     
     /*
@@ -89,19 +97,15 @@ int PagedMenu::displayMenu()
     }
     */
 
-    std::cout << "╚";
-    for (int i = 0; i < winCols - 2; i++)
-    {
-        std::cout << "═";
+    char userinput;
+    userinput = getch();
+    if (userinput == 'A' || userinput == 'a'){
+        printAt(1,1,"PLAY");
+        response = 1;
     }
-    std::cout << "╝" << endl;
-
-    if (option_count == 0){
-            return 1;
-        }
-
-
-    
-         
+    else if (userinput == 'D' || userinput == 'd'){
+        printAt(12,1,"QUIT");
+        response = 0;
+    }
     return response;
 }
