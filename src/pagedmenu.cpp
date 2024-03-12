@@ -42,6 +42,12 @@ int PagedMenu::displayMenu()
 
     std::cout << "╗" << endl; // Specify the namespace for "cout"
 
+    std::cout << "║" << "PLAY"<< "  " << "P"<< "Quit"<< "  " ;
+
+    std::cout << "║" << endl; 
+
+    
+    /*
     for (int i = 1; i < winRows - 2; i++) {
         int center_fix;
         center_fix = 0;
@@ -81,6 +87,7 @@ int PagedMenu::displayMenu()
         std::cout << "║" << endl;
 
     }
+    */
 
     std::cout << "╚";
     for (int i = 0; i < winCols - 2; i++)
@@ -90,7 +97,7 @@ int PagedMenu::displayMenu()
     std::cout << "╝" << endl;
 
     if (option_count == 0){
-            return 1
+            return 1;
         }
 
 
