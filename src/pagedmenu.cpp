@@ -22,7 +22,8 @@ int PagedMenu::displayMenu()
     int winCols = getWinCols();
     int winRows = getWinRows();
 
-    using namespace std; // Add this line to specify the namespace for "cout"
+    using namespace std; 
+    // Add this line to specify the namespace for "cout"
 
     //int size_w = 60 , size_h = 20;
     //int selected = 1;            //input value dont know what is this
@@ -56,12 +57,10 @@ int PagedMenu::displayMenu()
     }
     cout << "╝" << endl;
 
-    printAt(1,1, "PLAY");
-    printAt(1,2, "QUIT");
-    printAt(1,2, COLOR_BG_RED + "QUIT");
     
-    /*
+    
     for (int i = 1; i < winRows - 2; i++) {
+        /*
         int center_fix;
         center_fix = 0;
         string temp;
@@ -91,16 +90,20 @@ int PagedMenu::displayMenu()
 
         else{
             center = "";
-        }
+        }*/
 
-        std::cout << "║" ;
+        cout << "║" ;
         for (int j = 1; j < winRows - 2; j++){
-            std::cout << " ";
+            cout << " ";
         }
-        std::cout << "║" << endl;
+        cout << "║" << endl;
 
     }
-    */
+    
+    printAt(1,1, "PLAY");
+    printAt(1,2, "QUIT");
+    printAt(1,2, COLOR_BG_RED + "QUIT");
+    
 
     char userinput;
     userinput = getch(); //
