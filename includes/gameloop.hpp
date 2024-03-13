@@ -10,12 +10,12 @@ class Timer
     thread timer;
     int timer_row;
     int timer_col;
-    bool* is_writing;
     bool is_running;
     double paused_time;
     void job();
 public:
     double time;
+    bool* is_writing;
     Timer(bool* thePis_writing, int theRow, int theCol);
     ~Timer();
     void start();
@@ -30,6 +30,7 @@ class Gameloop
     int game_mode;
 public:
     unordered_map<char, array<int,2>> lookup; 
+    unordered_map<char, string> effect; 
     Gameloop(int theGame_mode);
     ~Gameloop();
     int run();

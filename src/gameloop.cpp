@@ -48,7 +48,7 @@ Timer::~Timer() {
 void Timer::job() {
     auto start_time = chrono::system_clock::now() - chrono::duration<double>(paused_time);
     while (is_running) {
-        if (!*is_writing) {
+        if (!* is_writing) {
             chrono::duration<float> time_elapsed_seconds = chrono::system_clock::now() - start_time;
                 if (time_elapsed_seconds.count() - time > 0) {
                     time = time_elapsed_seconds.count();
@@ -69,6 +69,12 @@ Gameloop::Gameloop(int theGame_mode)
         {char('a'), {-1, 0}},
         {char('s'), {0, 1}},
         {char('d'), {1, 0}},
+    };
+    effect = {
+        {char('w'), {'|'}},
+        {char('a'), {'-'}},
+        {char('s'), {'|'}},
+        {char('d'), {'-'}},
     };
     game_mode = theGame_mode;
 }
@@ -106,6 +112,7 @@ int Gameloop::run()
     maze.map2D;
     bool is_writing = false;
     Timer timer(&is_writing, 0, 0);
+    timer.start();
     while (true)
     {
         char input = getch();
@@ -113,45 +120,50 @@ int Gameloop::run()
         while (intersection(position[1], position[0], maze.map2D, the_first_move)) {
             the_first_move = false;
             if ( maze.map2D[position[0] + lookup[input][1]][position[1] + lookup[input][0]] != 0 ){
+                is_writing = true;
                 printAt( 2*position[1], position[0], maze.glyphs[8]); // change the moved space 
                 maze.editMap(position[0], position[1], 8); // edit the map
+                is_writing = false;
                 position[0] = position[0] + lookup[input][1]; // move the player
                 position[1] = position[1] + lookup[input][0]; // move the player
                 if (maze.map2D[position[0]][position[1]] == 2){
                     cout << "you win the game" << endl;
+                    timer.stop();
                     return 0;
                 }
                 if (maze.map2D[position[0]][position[1]] == 3){
+                    is_writing = true;
                     printAt( 2*position[1], position[0], maze.glyphs[9]); // change the player location
                     maze.editMap(position[0], position[1], 9);
+                    is_writing = false;
                     char input = getch();
                     for (int i = 1; i < 7; i++) {
                         if ( maze.map2D[position[0] + i*lookup[input][1]][position[1] + i*lookup[input][0]] != 2 && maze.map2D[position[0] + i*lookup[input][1]][position[1] + i*lookup[input][0]] != 8 ){
                             if (position[1] + i*lookup[input][0] != 0 && position[0] + i*lookup[input][1] != 0 && position[1] + i*lookup[input][0] != maze.result_width -1 && position[0] + i*lookup[input][1] != maze.result_height -1 ) {
+                                is_writing = true;
+                                printAt( 2*(position[1] + i*lookup[input][0]), position[0] + i*lookup[input][1], effect[input]); // change the moved space 
+                                maze.editMap(position[0] + i*lookup[input][1], position[1] + i*lookup[input][0], 1); // edit the map
+                                this_thread::sleep_for(chrono::milliseconds(50));
+                                
                                 printAt( 2*(position[1] + i*lookup[input][0]), position[0] + i*lookup[input][1], maze.glyphs[1]); // change the moved space 
                                 maze.editMap(position[0] + i*lookup[input][1], position[1] + i*lookup[input][0], 1); // edit the map
                                 this_thread::sleep_for(chrono::milliseconds(50));
+                                is_writing = false;
                             }
                         }
                     }
                     break;
                 }
+                is_writing = true;
                 printAt( 2*position[1], position[0], maze.glyphs[9]); // change the player location
                 maze.editMap(position[0], position[1], 9);
+                this_thread::sleep_for(chrono::milliseconds(25));
+                is_writing = false;
             }
             else 
                 break;
         }
     }
-    
-    timer.start();
-    this_thread::sleep_for(chrono::seconds(1));
-    timer.pause();
-    this_thread::sleep_for(chrono::seconds(1));
-    timer.start();
-    this_thread::sleep_for(chrono::seconds(1));
-    timer.stop();
-
     clearScreen();
     cout << "Maze dimension in chars: " << maze.result_width << "x" << maze.result_height << endl;
     
