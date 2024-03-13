@@ -18,29 +18,67 @@ int main()
 
     cursorHide();
 
-    Gameloop game(0);
-    int game_result = game.run();
-    while (true) {                      //Linkage with pagedmenu setting requried
-            PagedMenu menu(menu_data);
-            int response = menu.displayMenu()
-            if (response == -1) {
-                return 0;
-            } else {
-                Gameloop game(response);
+    while (true)
+    {
+        PagedMenu menu(menu_data);                    //Linkage with pagedmenu setting requried
+        int response = menu.displayMenu();
+        if (response == -1)                           //May change to 0 according pagedmenu
+        {
+            return 0; // Quit the game
+        }
+        else
+        {
+            Gameloop game(response);
+            int game_result = game.run();
+            if (game_result == 0)
+            {
+                cout << "You LOSE!!!" << endl;
+                // Handle lost state
             }
-            int game_result = game.run()
-            if (game_result == -1) {
-                return 0;
-                // quit game
-            } else if (game_result == 0) {
-                cout << "You LOSE!!!" << endl
-                // lost
-            } else {
-                cout << "You WIN!!!" << endl
-                // won
+            else if (game_result == 1)
+            {
+                cout << "You WIN!!!" << endl;
+                // Handle win state
             }
         }
-    /*
+    }
+
+    cursorShow();
+
+    return 0;
+}
+
+/* V2
+    while (true) 
+    {
+        PagedMenu menu(menu_data);            //Linkage with pagedmenu setting requried
+        int response = menu.displayMenu();
+        if (response == -1)                   //May change to 0 according pagedmenu
+        {                 
+            return 0;
+        } 
+        else 
+        {
+            Gameloop game(response);
+        }
+                                
+        int game_result = game.run();
+        if (game_result == 0) {
+            return 0;
+            // quit game
+        } 
+        else if (game_result == 1) {
+            cout << "You LOSE!!!" << endl
+            // lost
+        } 
+        else {
+            cout << "You WIN!!!" << endl
+            // won
+        }
+    }
+*/
+
+/* V1
     while (true) {
         PagedMenu menu(menu_data);
         int response = menu.displayMenu()
@@ -58,7 +96,4 @@ int main()
             // won
         }
     }
-    cursorShow();
-    */
-    return 0;
-}
+*/
