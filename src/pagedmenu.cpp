@@ -103,16 +103,26 @@ int PagedMenu::displayMenu()
     */
 
     char userinput;
-    userinput = getch();
-    if (userinput == 'A' || userinput == 'a')
+    userinput = getch(); //
+    if (userinput == 'A' || userinput == 'a') // Userinput "w" instead of "a"?
     {
-        printAt(0,1,"PLAY");
+        printAt(0,1,"PLAY");          // printAt(x-cor, y-cor, std::string)               
         response = 1;
     }
-    else if (userinput == 'D' || userinput == 'd')
+    else if (userinput == 'D' || userinput == 'd') 
     {
         printAt(0,2,"QUIT");
         response = 0;
     }
     return response;
 }
+
+/*     Main menu structure fyr:
+|- Play
+|- Gamemodes
+|  |- Classic 
+|  |- Squares 
+|- Options** 
+|  |- Color customization
+|- Quit
+*/
