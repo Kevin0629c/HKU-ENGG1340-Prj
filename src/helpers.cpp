@@ -22,16 +22,13 @@ void cursorShow() {
 */
 void printAt(int x, int y, string s)
 {
-    // Save current cursor position
-    cout << "\033[s";
-    // Move cursor to x, y
-    cout << "\033[" << y +1 << ";" << x +1 << "H";
-    // Print character
-    cout << s;
-    // Restore saved cursor position
-    cout << "\033[u" << flush;
+    // Move cursor to x, y and print s
+    cout << "\033[" << y +1 << ";" << x +1 << "H" << s << flush;
 }
 
+/*
+    Clear the terminal screen
+*/
 void clearScreen()
 {
     // CSI[2J clears screen, CSI[H moves the cursor to top-left corner
