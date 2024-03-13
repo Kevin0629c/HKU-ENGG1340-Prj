@@ -10,5 +10,6 @@ void clearScreen();
 int getWinRows();
 int getWinCols();
 char getch();
+void frame(int winCols, int winRows);
 
 #endif
