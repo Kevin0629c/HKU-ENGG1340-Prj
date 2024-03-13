@@ -28,13 +28,13 @@ public:
 class Gameloop
 {
     int game_mode;
-public:
+    bool intersection(int pos_x, int pos_y, int **themap, bool the_first_move);
     unordered_map<char, array<int,2>> lookup; 
     unordered_map<char, string> effect; 
+public:
     Gameloop(int theGame_mode);
     ~Gameloop();
     int run();
-    bool intersection(int pos_x, int pos_y, int **themap, bool the_first_move);
 };
 
 #endif 

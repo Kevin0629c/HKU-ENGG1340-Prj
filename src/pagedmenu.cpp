@@ -1,5 +1,6 @@
 #include "pagedmenu.hpp"
 #include "helpers.hpp"
+#include "colors.hpp"
 #include <iostream>
 #include <fstream>
 #include <string>
@@ -39,9 +40,6 @@ int PagedMenu::displayMenu()
     }
     cout << "╗" << endl;
 
-    cout << "PLAY" << endl;
-    cout << "QUIT" << endl;
-
     for (int i = 1; i < winRows - 2; i++) 
     {
         for (int j = 1; j < winRows - 2; j++)
@@ -58,6 +56,9 @@ int PagedMenu::displayMenu()
     }
     cout << "╝" << endl;
 
+    printAt(1,1, "PLAY");
+    printAt(1,2, "QUIT");
+    printAt(1,2, COLOR_BG_RED + "QUIT");
     
     /*
     for (int i = 1; i < winRows - 2; i++) {

@@ -20,7 +20,7 @@ int main()
 
     while (true)
     {
-        PagedMenu menu();                    //Linkage with pagedmenu setting requried
+        PagedMenu menu;                    //Linkage with pagedmenu setting requried
         int response = menu.displayMenu();
         if (response == -1)                           //May change to 0 according pagedmenu
         {
