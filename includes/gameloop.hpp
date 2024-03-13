@@ -2,6 +2,7 @@
 #define GAMELOOP_HPP_
 #include <thread>
 #include <string>
+#include <vector>
 #include <unordered_map>
 using namespace std;
 
@@ -28,13 +29,20 @@ public:
 class Gameloop
 {
     int game_mode;
-public:
+    bool choice;
+    char input;
+    char playerinput;
+    char playerinput2;
     unordered_map<char, array<int,2>> lookup; 
     unordered_map<char, string> effect; 
+    vector<int> resolvelist;
+    vector<int> checkwall(char playerinput, int* position, int** themap, int width, int height);
+    bool intersection(int pos_x, int pos_y, int **themap, bool the_first_move);
+public:
     Gameloop(int theGame_mode);
     ~Gameloop();
     int run();
-    bool intersection(int pos_x, int pos_y, int **themap, bool the_first_move);
+
 };
 
 #endif 

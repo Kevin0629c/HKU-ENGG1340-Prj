@@ -7,9 +7,8 @@
 
 using namespace std;
 
-PagedMenu::PagedMenu(char theMenu_data)
+PagedMenu::PagedMenu()
 {
-    menu_data = theMenu_data;
 }
 
 PagedMenu::~PagedMenu()
