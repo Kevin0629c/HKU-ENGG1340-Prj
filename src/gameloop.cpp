@@ -100,7 +100,7 @@ bool Gameloop::intersection(int pos_x, int pos_y, int **themap, bool the_first_m
     return 1;
 }
 
-vector<int> Gameloop::checkwall(char playerinput, int* position, int** themap, int width, int height, string detectora){
+vector<int> Gameloop::checkwall(char playerinput, int* position, int** themap, int width, int height, string detector){
     vector<int> resolvelist;
     resolvelist.clear();
     for (int i = 1; i < 7; i++) { 
@@ -137,7 +137,7 @@ int Gameloop::run()
     maze.printMap();
     maze.map2D;
     bool is_writing = false;
-    Timer timer(&is_writing, 0, 0);
+    Timer timer(&is_writing, 0, winCols/2 - 7);
     timer.start();
     while (true)
     {
