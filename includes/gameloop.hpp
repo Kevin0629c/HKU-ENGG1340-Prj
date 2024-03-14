@@ -1,5 +1,6 @@
 #ifndef GAMELOOP_HPP_
 #define GAMELOOP_HPP_
+#include "maze2D.hpp"
 #include <thread>
 #include <string>
 #include <vector>
@@ -36,13 +37,13 @@ class Gameloop
     unordered_map<char, array<int,2>> lookup; 
     unordered_map<char, string> effect; 
     vector<int> resolvelist;
-    vector<int> checkwall(char playerinput, int* position, int** themap, int width, int height);
+    vector<int> checkwall(char playerinput, int* position, int** themap, int width, int height, string detector);
     bool intersection(int pos_x, int pos_y, int **themap, bool the_first_move);
 public:
     Gameloop(int theGame_mode);
     ~Gameloop();
     int run();
-    bool intersection(int pos_x, int pos_y, int **themap, bool the_first_move);
+    
 };
 
 #endif 

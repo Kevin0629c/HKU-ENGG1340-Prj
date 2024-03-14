@@ -77,7 +77,6 @@ Gameloop::Gameloop(int theGame_mode)
         {char('a'), {"--"}},
         {char('s'), {"||"}},
         {char('d'), {"--"}},
-        {char('`'), {COLOR_RED + "██"}}
     };
     game_mode = theGame_mode;
 }
@@ -101,7 +100,7 @@ bool Gameloop::intersection(int pos_x, int pos_y, int **themap, bool the_first_m
     return 1;
 }
 
-vector<int> Gameloop::checkwall(char playerinput, int* position, int** themap, int width, int height){
+vector<int> Gameloop::checkwall(char playerinput, int* position, int** themap, int width, int height, string detectora){
     vector<int> resolvelist;
     resolvelist.clear();
     for (int i = 1; i < 7; i++) { 
@@ -109,7 +108,7 @@ vector<int> Gameloop::checkwall(char playerinput, int* position, int** themap, i
             if (position[1] + i*lookup[playerinput][0] != 0 && position[0] + i*lookup[playerinput][1] != 0 && position[1] + i*lookup[playerinput][0] != width -1 && position[0] + i*lookup[playerinput][1] != height -1 ) {
                 this_thread::sleep_for(chrono::milliseconds(1));
                 resolvelist.push_back(themap[position[0] + i*lookup[playerinput][1]][position[1] + i*lookup[playerinput][0]]);
-                printAt( 2*(position[1] + i*lookup[playerinput][0]), position[0] + i*lookup[playerinput][1], effect['`']);
+                printAt( 2*(position[1] + i*lookup[playerinput][0]), position[0] + i*lookup[playerinput][1], detector);
             }
             else if (position[1] + i*lookup[playerinput][0] == 0 || position[0] + i*lookup[playerinput][1] == 0 || position[1] + i*lookup[playerinput][0] == width -1 || position[0] + i*lookup[playerinput][1] == height -1 ) {
                 return resolvelist;
@@ -163,7 +162,7 @@ int Gameloop::run()
                 }
                 if (maze.map2D[position[0]][position[1]] == 3){
                     is_writing = true;
-                    this_thread::sleep_for(chrono::milliseconds(50));
+                    this_thread::sleep_for(chrono::milliseconds(1));
                     printAt( 2*position[1], position[0], maze.glyphs[9]); // change the player location
                     maze.editMap(position[0], position[1], 9);
                     is_writing = false;
@@ -171,7 +170,7 @@ int Gameloop::run()
                     //chooce the direction of wall breaking
                     while (choice == false) {
                         is_writing = true;
-                        resolvelist = checkwall(playerinput, position, maze.map2D, maze.result_width, maze.result_height);
+                        resolvelist = checkwall(playerinput, position, maze.map2D, maze.result_width, maze.result_height, maze.glyphs[5]);
                         is_writing = false;
                         char playerinput2 = playerinput;
                         playerinput = getch();
@@ -180,7 +179,7 @@ int Gameloop::run()
                             //breaking wall
                             choice = true;
                             for (int i = 1; i < 7; i++) { 
-                                if ( maze.map2D[position[0] + i*lookup[playerinput][1]][position[1] + i*lookup[playerinput][0]] != 2 && maze.map2D[position[0] + i*lookup[playerinput][1]][position[1] + i*lookup[playerinput][0]] != 8 ){
+                                if ( maze.map2D[position[0] + i*lookup[playerinput][1]][position[1] + i*lookup[playerinput][0]] != 2 ){
                                     if (position[1] + i*lookup[playerinput][0] != 0 && position[0] + i*lookup[playerinput][1] != 0 && position[1] + i*lookup[playerinput][0] != maze.result_width -1 && position[0] + i*lookup[playerinput][1] != maze.result_height -1 ) {
                                         is_writing = true;
                                         this_thread::sleep_for(chrono::milliseconds(50));
@@ -189,13 +188,14 @@ int Gameloop::run()
                                         printAt( 2*(position[1] + i*lookup[playerinput][0]), position[0] + i*lookup[playerinput][1], maze.glyphs[1]); // change the moved space 
                                         maze.editMap(position[0] + i*lookup[playerinput][1], position[1] + i*lookup[playerinput][0], 1); // edit the map
                                         is_writing = false;
+                                        
                                     }
-                                    else if (position[1] + i*lookup[playerinput][0] != 0 || position[0] + i*lookup[playerinput][1] != 0 || position[1] + i*lookup[playerinput][0] != maze.result_width -1 || position[0] + i*lookup[playerinput][1] != maze.result_height -1 ) {
+                                    else if (position[1] + i*lookup[playerinput][0] == 0 || position[0] + i*lookup[playerinput][1] == 0 || position[1] + i*lookup[playerinput][0] == maze.result_width -1 || position[0] + i*lookup[playerinput][1] == maze.result_height -1 ) {
                                         break;
                                     }
 
                                 }
-                                else if (position[1] + i*lookup[playerinput][0] != 0 || position[0] + i*lookup[playerinput][1] != 0 || position[1] + i*lookup[playerinput][0] != maze.result_width -1 || position[0] + i*lookup[playerinput][1] != maze.result_height -1 ) {
+                                else if (position[1] + i*lookup[playerinput][0] == 0 || position[0] + i*lookup[playerinput][1] == 0 || position[1] + i*lookup[playerinput][0] == maze.result_width -1 || position[0] + i*lookup[playerinput][1] == maze.result_height -1 ) {
                                     break;
                                 }
                             }
