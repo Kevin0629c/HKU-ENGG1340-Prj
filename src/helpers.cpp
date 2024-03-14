@@ -62,6 +62,22 @@ char getch()
 }
 
 /*
+    Toggle the echo of the terminal
+*/
+void toggleEcho()
+{
+    // get stdin file descriptor
+    int file_desc = STDIN_FILENO;
+    // get stdin file settings
+    struct termios old_settings, new_settings;
+    tcgetattr(file_desc, &old_settings);
+    new_settings = old_settings;
+    // modifies settings
+    new_settings.c_lflag ^= ECHO;
+    tcsetattr(file_desc, TCSANOW, &new_settings);
+}
+
+/*
     Get the number of rows in the terminal
     Returns the number of rows
 */
