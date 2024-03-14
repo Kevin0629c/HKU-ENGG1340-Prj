@@ -2,6 +2,8 @@
 #define COLORS_HPP_
 #include <string>
 
+using namespace std;
+
 const string COLOR_DEFAULT = "\033[0m";
 // foreground colors (text)
 const string COLOR_BLACK = "\033[30m";

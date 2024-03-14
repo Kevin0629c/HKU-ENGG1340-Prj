@@ -42,7 +42,7 @@ public:
     Gameloop(int theGame_mode);
     ~Gameloop();
     int run();
-
+    bool intersection(int pos_x, int pos_y, int **themap, bool the_first_move);
 };
 
 #endif 

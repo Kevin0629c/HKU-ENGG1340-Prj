@@ -62,6 +62,22 @@ char getch()
 }
 
 /*
+    Toggle the echo of the terminal
+*/
+void toggleEcho()
+{
+    // get stdin file descriptor
+    int file_desc = STDIN_FILENO;
+    // get stdin file settings
+    struct termios old_settings, new_settings;
+    tcgetattr(file_desc, &old_settings);
+    new_settings = old_settings;
+    // modifies settings
+    new_settings.c_lflag ^= ECHO;
+    tcsetattr(file_desc, TCSANOW, &new_settings);
+}
+
+/*
     Get the number of rows in the terminal
     Returns the number of rows
 */
@@ -79,4 +95,29 @@ int getWinCols() {
     struct winsize size;
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &size);
     return size.ws_col;
+}
+
+void frame(int winCols, int winRows) {
+
+    cout << "╔";
+    for (int i = 0; i < winCols - 2; i++) 
+    {
+        cout << "═";
+    }
+    cout << "╗" << endl;
+    
+    for (int i = 1; i < winRows - 2; i++) {
+        cout << "║" ;
+        for (int j = 1; j < winCols - 1; j++){
+            cout << " ";
+        }
+        cout << "║" << endl;
+    }
+
+    cout << "╚";
+    for (int i = 0; i < winCols - 2; i++) 
+    {
+        cout << "═";
+    }
+    cout << "╝" << endl;
 }

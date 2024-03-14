@@ -10,5 +10,7 @@ void clearScreen();
 int getWinRows();
 int getWinCols();
 char getch();
+void toggleEcho();
+void frame(int winCols, int winRows);
 
 #endif
