@@ -22,50 +22,49 @@ int PagedMenu::displayMenu()
     int winCols = getWinCols();
     int winRows = getWinRows();
 
-    using namespace std; 
-    // Add this line to specify the namespace for "cout"
+    using namespace std;
+    string play = R"(PLAY)";
 
-    //int size_w = 60 , size_h = 20;
-    //int selected = 1;            //input value dont know what is this
-    //int option_count = 5;             //(just for sub sth misssing dont use this as last result)
-    //int title_pos = (option_count == 0) ? size_h * 0.5 - 1 : size_h * 0.35;
-    //string title = "Hello";            //list(menu_data.keys())[0] how to do this 
+
+    string quit = R"(QUIT)";
 
     frame(winCols,winRows);
+    printAt(1,winRows/8,R"(
+x        _    __  __    _     ________ _   _  ____    
+x       / \  |  \/  |  / \   |__  /_ _| \ | |/ ___|   
+x      / _ \ | |\/| | / _ \    / / | ||  \| | |  _    
+x     / ___ \| |  | |/ ___ \  / /_ | || |\  | |_| |   
+x    /_/__ \_\_|  |_/_/   \_\/____|___|_| \_|\____|__ 
+x    | __ )|  _ \| ____|  / \  | |/ / _ \| | | |_   _|
+x    |  _ \| |_) |  _|   / _ \ | ' / | | | | | | | |  
+x    | |_) |  _ <| |___ / ___ \| . \ |_| | |_| | | |  
+x    |____/|_| \_\_____/_/   \_\_|\_\___/ \___/  |_|  
+x                                                        )");
+
     
-    printAt(1,1, COLOR_BG_RED + "PLAY");
-    printAt(1,2, "QUIT");
+    printAt(winCols-30,3, COLOR_BG_RED + play);
+    printAt(winCols-30,11, quit);
     
 
     char userinput ;
     userinput = getch();
     while (userinput != 'D'&& userinput != 'd')
-    {   
-        userinput = getch();
-        printAt(1,1,COLOR_DEFAULT + "PLAY");
-        printAt(1,2,COLOR_DEFAULT + "QUIT");
+    {           
+        printAt(winCols-30,3,COLOR_DEFAULT + play);
+        printAt(winCols-30,11,COLOR_DEFAULT + quit);
         if (userinput == 'W' || userinput == 'w') 
         {
-            printAt(1,1,COLOR_BG_RED + "PLAY");          // printAt(x-cor, y-cor, std::string)               
+            printAt(winCols-30,3,COLOR_BG_RED + play);          // printAt(x-cor, y-cor, std::string)               
             response = 0;
         }
         else if (userinput == 'S' || userinput == 's') 
         {
-            printAt(1,2,COLOR_BG_RED + "QUIT");
+            printAt(winCols-30,11,COLOR_BG_RED + quit);
             response = -1;
         }
-        
+        userinput = getch();
     }
 
     return response;
 }
 
-/*     Main menu structure fyr:
-|- Play
-|- Gamemodes
-|  |- Classic 
-|  |- Squares 
-|- Options** 
-|  |- Color customization
-|- Quit
-*/
