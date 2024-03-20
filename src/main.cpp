@@ -17,7 +17,7 @@ int main()
     }
 
     cursorHide();
-
+    toggleEcho();
     while (true)
     {
         PagedMenu menu;                    //Linkage with pagedmenu setting requried

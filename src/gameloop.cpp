@@ -1,12 +1,14 @@
 #include "gameloop.hpp"
 #include "helpers.hpp"
 #include "maze2D.hpp"
+#include "colors.hpp"
 #include <thread>
 #include <chrono>
 #include <iostream>
 #include <iomanip>
 #include <string>
 #include <stdio.h>
+#include <vector>
 
 using namespace std;
 
@@ -50,7 +52,7 @@ void Timer::job() {
     while (is_running) {
         if (!* is_writing) {
             chrono::duration<float> time_elapsed_seconds = chrono::system_clock::now() - start_time;
-                if (time_elapsed_seconds.count() - time > 0) {
+                if (time_elapsed_seconds.count() - time > 0.01) {
                     time = time_elapsed_seconds.count();
                     cout << "\033[" << timer_row << ";" << timer_col << "H[" << fixed << setprecision(2) << time << "s]" << flush;
                 }
@@ -71,10 +73,10 @@ Gameloop::Gameloop(int theGame_mode)
         {char('d'), {1, 0}},
     };
     effect = {
-        {char('w'), {'|'}},
-        {char('a'), {'-'}},
-        {char('s'), {'|'}},
-        {char('d'), {'-'}},
+        {char('w'), {"||"}},
+        {char('a'), {"--"}},
+        {char('s'), {"||"}},
+        {char('d'), {"--"}},
     };
     game_mode = theGame_mode;
 }
@@ -97,6 +99,29 @@ bool Gameloop::intersection(int pos_x, int pos_y, int **themap, bool the_first_m
         return 0;
     return 1;
 }
+
+vector<int> Gameloop::checkwall(char playerinput, int* position, int** themap, int width, int height, string detector){
+    vector<int> resolvelist;
+    resolvelist.clear();
+    for (int i = 1; i < 7; i++) { 
+        if ( themap[position[0] + i*lookup[playerinput][1]][position[1] + i*lookup[playerinput][0]] != 2 ) {
+            if (position[1] + i*lookup[playerinput][0] != 0 && position[0] + i*lookup[playerinput][1] != 0 && position[1] + i*lookup[playerinput][0] != width -1 && position[0] + i*lookup[playerinput][1] != height -1 ) {
+                this_thread::sleep_for(chrono::milliseconds(1));
+                resolvelist.push_back(themap[position[0] + i*lookup[playerinput][1]][position[1] + i*lookup[playerinput][0]]);
+                printAt( 2*(position[1] + i*lookup[playerinput][0]), position[0] + i*lookup[playerinput][1], detector);
+            }
+            else if (position[1] + i*lookup[playerinput][0] == 0 || position[0] + i*lookup[playerinput][1] == 0 || position[1] + i*lookup[playerinput][0] == width -1 || position[0] + i*lookup[playerinput][1] == height -1 ) {
+                return resolvelist;
+            }
+        }
+        else{
+            return resolvelist;
+        }
+    }
+    return resolvelist;
+}
+
+
 int Gameloop::run()
 {
     int winCols = getWinCols();
@@ -104,6 +129,7 @@ int Gameloop::run()
     int position[2] = {1, 1}; //row / col
     char input;
     bool the_first_move;
+    bool choice;
     // cout << "winCols: " << winCols << endl;
     // cout << "winRows: " << winRows << endl;
     clearScreen();
@@ -111,21 +137,24 @@ int Gameloop::run()
     maze.printMap();
     maze.map2D;
     bool is_writing = false;
-    Timer timer(&is_writing, 0, 0);
+    Timer timer(&is_writing, 0, winCols/2 - 7);
     timer.start();
     while (true)
     {
+        choice = false;
         char input = getch();
         the_first_move = true;
         while (intersection(position[1], position[0], maze.map2D, the_first_move)) {
             the_first_move = false;
             if ( maze.map2D[position[0] + lookup[input][1]][position[1] + lookup[input][0]] != 0 ){
                 is_writing = true;
+                this_thread::sleep_for(chrono::milliseconds(25));
                 printAt( 2*position[1], position[0], maze.glyphs[8]); // change the moved space 
                 maze.editMap(position[0], position[1], 8); // edit the map
-                is_writing = false;
                 position[0] = position[0] + lookup[input][1]; // move the player
                 position[1] = position[1] + lookup[input][0]; // move the player
+                printAt( 2*position[1], position[0], maze.glyphs[9]); // change the player location
+                is_writing = false;
                 if (maze.map2D[position[0]][position[1]] == 2){
                     cout << "you win the game" << endl;
                     timer.stop();
@@ -133,32 +162,56 @@ int Gameloop::run()
                 }
                 if (maze.map2D[position[0]][position[1]] == 3){
                     is_writing = true;
+                    this_thread::sleep_for(chrono::milliseconds(1));
                     printAt( 2*position[1], position[0], maze.glyphs[9]); // change the player location
                     maze.editMap(position[0], position[1], 9);
                     is_writing = false;
-                    char input = getch();
-                    for (int i = 1; i < 7; i++) {
-                        if ( maze.map2D[position[0] + i*lookup[input][1]][position[1] + i*lookup[input][0]] != 2 && maze.map2D[position[0] + i*lookup[input][1]][position[1] + i*lookup[input][0]] != 8 ){
-                            if (position[1] + i*lookup[input][0] != 0 && position[0] + i*lookup[input][1] != 0 && position[1] + i*lookup[input][0] != maze.result_width -1 && position[0] + i*lookup[input][1] != maze.result_height -1 ) {
-                                is_writing = true;
-                                printAt( 2*(position[1] + i*lookup[input][0]), position[0] + i*lookup[input][1], effect[input]); // change the moved space 
-                                maze.editMap(position[0] + i*lookup[input][1], position[1] + i*lookup[input][0], 1); // edit the map
-                                this_thread::sleep_for(chrono::milliseconds(50));
-                                
-                                printAt( 2*(position[1] + i*lookup[input][0]), position[0] + i*lookup[input][1], maze.glyphs[1]); // change the moved space 
-                                maze.editMap(position[0] + i*lookup[input][1], position[1] + i*lookup[input][0], 1); // edit the map
-                                this_thread::sleep_for(chrono::milliseconds(50));
-                                is_writing = false;
+                    char playerinput = getch(); //the direction of breaking
+                    //chooce the direction of wall breaking
+                    while (choice == false) {
+                        is_writing = true;
+                        resolvelist = checkwall(playerinput, position, maze.map2D, maze.result_width, maze.result_height, maze.glyphs[5]);
+                        is_writing = false;
+                        char playerinput2 = playerinput;
+                        playerinput = getch();
+                        
+                        if (playerinput == playerinput2) {
+                            //breaking wall
+                            choice = true;
+                            for (int i = 1; i < 7; i++) { 
+                                if ( maze.map2D[position[0] + i*lookup[playerinput][1]][position[1] + i*lookup[playerinput][0]] != 2 ){
+                                    if (position[1] + i*lookup[playerinput][0] != 0 && position[0] + i*lookup[playerinput][1] != 0 && position[1] + i*lookup[playerinput][0] != maze.result_width -1 && position[0] + i*lookup[playerinput][1] != maze.result_height -1 ) {
+                                        is_writing = true;
+                                        this_thread::sleep_for(chrono::milliseconds(50));
+                                        printAt( 2*(position[1] + i*lookup[playerinput][0]), position[0] + i*lookup[playerinput][1], effect[playerinput]); // change the moved space 
+                                        
+                                        printAt( 2*(position[1] + i*lookup[playerinput][0]), position[0] + i*lookup[playerinput][1], maze.glyphs[1]); // change the moved space 
+                                        maze.editMap(position[0] + i*lookup[playerinput][1], position[1] + i*lookup[playerinput][0], 1); // edit the map
+                                        is_writing = false;
+                                        
+                                    }
+                                    else if (position[1] + i*lookup[playerinput][0] == 0 || position[0] + i*lookup[playerinput][1] == 0 || position[1] + i*lookup[playerinput][0] == maze.result_width -1 || position[0] + i*lookup[playerinput][1] == maze.result_height -1 ) {
+                                        break;
+                                    }
+
+                                }
+                                else if (position[1] + i*lookup[playerinput][0] == 0 || position[0] + i*lookup[playerinput][1] == 0 || position[1] + i*lookup[playerinput][0] == maze.result_width -1 || position[0] + i*lookup[playerinput][1] == maze.result_height -1 ) {
+                                    break;
+                                }
                             }
+                        }
+                        else if (playerinput != playerinput2) {
+                        for (int i = 1; i <= resolvelist.size(); i++) { //
+                            is_writing = true;
+                            this_thread::sleep_for(chrono::milliseconds(1));
+                            printAt( 2*(position[1] + i*lookup[playerinput2][0]), position[0] + i*lookup[playerinput2][1], maze.glyphs[resolvelist[i-1]]);
+                            is_writing = false;
+                        }
                         }
                     }
                     break;
                 }
-                is_writing = true;
-                printAt( 2*position[1], position[0], maze.glyphs[9]); // change the player location
                 maze.editMap(position[0], position[1], 9);
-                this_thread::sleep_for(chrono::milliseconds(25));
-                is_writing = false;
             }
             else 
                 break;
