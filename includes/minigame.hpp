@@ -3,11 +3,12 @@
 
 class Minigame
 {
-    int game_mode;
 public:
-    Minigame(int theGame_mode);
+    Minigame();
     ~Minigame();
     int run();
+    void countdown(int duration, int x, int y);
+    bool direction();
 };
 
 #endif 
