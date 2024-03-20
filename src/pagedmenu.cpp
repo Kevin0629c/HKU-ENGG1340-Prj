@@ -22,68 +22,49 @@ int PagedMenu::displayMenu()
     int winCols = getWinCols();
     int winRows = getWinRows();
 
-    using namespace std; 
-    // Add this line to specify the namespace for "cout"
+    using namespace std;
+    string play = R"(PLAY)";
 
-    //int size_w = 60 , size_h = 20;
-    //int selected = 1;            //input value dont know what is this
-    //int option_count = 5;             //(just for sub sth misssing dont use this as last result)
-    //int title_pos = (option_count == 0) ? size_h * 0.5 - 1 : size_h * 0.35;
-    //string title = "Hello";            //list(menu_data.keys())[0] how to do this 
 
-    system("clear");
+    string quit = R"(QUIT)";
 
-        
-    cout << "╔";
-    for (int i = 0; i < winCols - 2; i++) 
-    {
-        cout << "═";
-    }
-    cout << "╗" << endl;
+    frame(winCols,winRows);
+    printAt(1,winRows/8,R"(
+x        _    __  __    _     ________ _   _  ____    
+x       / \  |  \/  |  / \   |__  /_ _| \ | |/ ___|   
+x      / _ \ | |\/| | / _ \    / / | ||  \| | |  _    
+x     / ___ \| |  | |/ ___ \  / /_ | || |\  | |_| |   
+x    /_/__ \_\_|  |_/_/   \_\/____|___|_| \_|\____|__ 
+x    | __ )|  _ \| ____|  / \  | |/ / _ \| | | |_   _|
+x    |  _ \| |_) |  _|   / _ \ | ' / | | | | | | | |  
+x    | |_) |  _ <| |___ / ___ \| . \ |_| | |_| | | |  
+x    |____/|_| \_\_____/_/   \_\_|\_\___/ \___/  |_|  
+x                                                        )");
+
     
-    for (int i = 1; i < winRows - 2; i++) {
-        cout << "║" ;
-        for (int j = 1; j < winCols - 1; j++){
-            cout << " ";
+    printAt(winCols-30,3, COLOR_BG_RED + play);
+    printAt(winCols-30,11, quit);
+    
+
+    char userinput ;
+    userinput = getch();
+    while (userinput != 'D'&& userinput != 'd')
+    {           
+        printAt(winCols-30,3,COLOR_DEFAULT + play);
+        printAt(winCols-30,11,COLOR_DEFAULT + quit);
+        if (userinput == 'W' || userinput == 'w') 
+        {
+            printAt(winCols-30,3,COLOR_BG_RED + play);          // printAt(x-cor, y-cor, std::string)               
+            response = 0;
         }
-        cout << "║" << endl;
+        else if (userinput == 'S' || userinput == 's') 
+        {
+            printAt(winCols-30,11,COLOR_BG_RED + quit);
+            response = -1;
+        }
+        userinput = getch();
     }
 
-    cout << "╚";
-    for (int i = 0; i < winCols - 2; i++) 
-    {
-        cout << "═";
-    }
-    cout << "╝" << endl;
-
-    
-    
-    printAt(1,1, "PLAY");
-    printAt(1,2, "QUIT");
-    printAt(1,2, COLOR_BG_RED + "QUIT");
-    
-
-    char userinput;
-    userinput = getch(); //
-    if (userinput == 'A' || userinput == 'a') // Userinput "w" instead of "a"?
-    {
-        printAt(0,1,"PLAY");          // printAt(x-cor, y-cor, std::string)               
-        response = 1;
-    }
-    else if (userinput == 'D' || userinput == 'd') 
-    {
-        printAt(0,2,"QUIT");
-        response = 0;
-    }
     return response;
 }
 
-/*     Main menu structure fyr:
-|- Play
-|- Gamemodes
-|  |- Classic 
-|  |- Squares 
-|- Options** 
-|  |- Color customization
-|- Quit
-*/

@@ -22,9 +22,10 @@ int main()
     {
         PagedMenu menu;                    //Linkage with pagedmenu setting requried
         int response = menu.displayMenu();
+        clearScreen();
         if (response == -1)                           //May change to 0 according pagedmenu
         {
-            return 0; // Quit the game
+            return 1; // Quit the game
         }
         else
         {
