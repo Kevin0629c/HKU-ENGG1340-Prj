@@ -29,7 +29,7 @@ int PagedMenu::displayMenu()
     string quit = R"(QUIT)";
 
     frame(winCols,winRows);
-    printAt(1,winRows/8,R"(
+    printAt(1,(winRows/2)-5,R"(
 x        _    __  __    _     ________ _   _  ____    
 x       / \  |  \/  |  / \   |__  /_ _| \ | |/ ___|   
 x      / _ \ | |\/| | / _ \    / / | ||  \| | |  _    
