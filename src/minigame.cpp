@@ -139,7 +139,7 @@ int Minigame::run()
             exit(0);
         } else {
                 count++;
-                printAt()
+                //printAt()
                 printAt(2, 3, "Chances left : "+ to_string(4-count));
                 run();
 

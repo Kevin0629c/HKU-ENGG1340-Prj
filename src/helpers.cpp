@@ -121,3 +121,14 @@ void frame(int winCols, int winRows) {
     }
     cout << "╝" << endl;
 }
+void botton(int x, int y, string colors, string s )
+{
+    string top = R"(╭──────╮)";
+    string mid = R"(│      │)";
+    string bot = R"(╰──────╯)";
+
+    printAt(x-2,y-1,colors + top);
+    printAt(x-2,y,colors + mid);
+    printAt(x,y,colors + s);
+    printAt(x-2,y+1, colors + bot);    
+}
