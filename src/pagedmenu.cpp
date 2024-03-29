@@ -23,8 +23,11 @@ int PagedMenu::displayMenu()
     int winRows = getWinRows();
 
     using namespace std;
-    string play = R"(PLAY)";
+    string top = R"(╭──────╮)";
+    string mid = R"(│      │)";
+    string bot = R"(╰──────╯)";
 
+    string play = R"(PLAY)";
 
     string quit = R"(QUIT)";
 
@@ -41,25 +44,28 @@ x    | |_) |  _ <| |___ / ___ \| . \ |_| | |_| | | |
 x    |____/|_| \_\_____/_/   \_\_|\_\___/ \___/  |_|  
 x                                                        )");
 
-    
-    printAt(winCols-30,3, COLOR_BG_RED + play);
-    printAt(winCols-30,11, quit);
+    botton(winCols-29,(winRows/2)-5,COLOR_GREEN, play);
+
+    botton(winCols-29,(winRows/2)+2,COLOR_DEFAULT,quit);
+
     
 
     char userinput ;
     userinput = getch();
+
     while (userinput != 'D'&& userinput != 'd')
-    {           
-        printAt(winCols-30,3,COLOR_DEFAULT + play);
-        printAt(winCols-30,11,COLOR_DEFAULT + quit);
+    {
+
+        botton(winCols-29,(winRows/2)-5,COLOR_DEFAULT, play);
+        botton(winCols-29,(winRows/2)+2,COLOR_DEFAULT,quit);
         if (userinput == 'W' || userinput == 'w') 
         {
-            printAt(winCols-30,3,COLOR_BG_RED + play);          // printAt(x-cor, y-cor, std::string)               
+            botton(winCols-29,(winRows/2)-5,COLOR_GREEN, play);          // printAt(x-cor, y-cor, std::string)               
             response = 0;
         }
         else if (userinput == 'S' || userinput == 's') 
         {
-            printAt(winCols-30,11,COLOR_BG_RED + quit);
+            botton(winCols-29,(winRows/2)+2,COLOR_RED,quit);
             response = -1;
         }
         userinput = getch();

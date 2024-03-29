@@ -2,6 +2,7 @@
 #include "helpers.hpp"
 #include "maze2D.hpp"
 #include "colors.hpp"
+#include "minigame.hpp"
 #include <thread>
 #include <chrono>
 #include <iostream>
@@ -66,12 +67,14 @@ void Timer::job() {
 
 Gameloop::Gameloop(int theGame_mode)
 {
-    lookup = {
+    // lookup: the allowed player movement
+    lookup = {  
         {char('w'), {0, -1}},
         {char('a'), {-1, 0}},
         {char('s'), {0, 1}},
         {char('d'), {1, 0}},
     };
+    // effect: the effect of breaking wall
     effect = {
         {char('w'), {"||"}},
         {char('a'), {"--"}},
@@ -84,6 +87,7 @@ Gameloop::Gameloop(int theGame_mode)
 Gameloop::~Gameloop()
 {
 }
+// intersection: allow the player to move more smoothly and stop when they arrive the intersection
 bool Gameloop::intersection(int pos_x, int pos_y, int **themap, bool the_first_move){
     int num = 0;
     if (themap[pos_y+1][pos_x] == 1 || themap[pos_y+1][pos_x] == 8)
@@ -99,15 +103,19 @@ bool Gameloop::intersection(int pos_x, int pos_y, int **themap, bool the_first_m
         return 0;
     return 1;
 }
-
+// checkwall: allow the player to knowing the wall they going to break down / and showing that with "detector"
 vector<int> Gameloop::checkwall(char playerinput, int* position, int** themap, int width, int height, string detector){
+    
+    // save the wall data into the list that allow the player to change their idea
     vector<int> resolvelist;
     resolvelist.clear();
+
     for (int i = 1; i < 7; i++) { 
         if ( themap[position[0] + i*lookup[playerinput][1]][position[1] + i*lookup[playerinput][0]] != 2 ) {
             if (position[1] + i*lookup[playerinput][0] != 0 && position[0] + i*lookup[playerinput][1] != 0 && position[1] + i*lookup[playerinput][0] != width -1 && position[0] + i*lookup[playerinput][1] != height -1 ) {
                 this_thread::sleep_for(chrono::milliseconds(1));
                 resolvelist.push_back(themap[position[0] + i*lookup[playerinput][1]][position[1] + i*lookup[playerinput][0]]);
+                // print the wall which the player going to break down with the "detector"
                 printAt( 2*(position[1] + i*lookup[playerinput][0]), position[0] + i*lookup[playerinput][1], detector);
             }
             else if (position[1] + i*lookup[playerinput][0] == 0 || position[0] + i*lookup[playerinput][1] == 0 || position[1] + i*lookup[playerinput][0] == width -1 || position[0] + i*lookup[playerinput][1] == height -1 ) {
@@ -143,35 +151,49 @@ int Gameloop::run()
     {
         choice = false;
         char input = getch();
+        // check if the player is in the first move or not
         the_first_move = true;
+        
         while (intersection(position[1], position[0], maze.map2D, the_first_move)) {
             the_first_move = false;
+            // player movement: only stop when there is intersection or wall
             if ( maze.map2D[position[0] + lookup[input][1]][position[1] + lookup[input][0]] != 0 ){
                 is_writing = true;
                 this_thread::sleep_for(chrono::milliseconds(25));
+                // replace the moved place to glyph[8]
                 printAt( 2*position[1], position[0], maze.glyphs[8]); // change the moved space 
                 maze.editMap(position[0], position[1], 8); // edit the map
+
                 position[0] = position[0] + lookup[input][1]; // move the player
                 position[1] = position[1] + lookup[input][0]; // move the player
                 printAt( 2*position[1], position[0], maze.glyphs[9]); // change the player location
                 is_writing = false;
+
+                // end the game when the player arrive to the "end"
                 if (maze.map2D[position[0]][position[1]] == 2){
                     cout << "you win the game" << endl;
                     timer.stop();
                     return 0;
                 }
+
+                // start the minigame when the player arrive to the "function"
                 if (maze.map2D[position[0]][position[1]] == 3){
                     is_writing = true;
                     this_thread::sleep_for(chrono::milliseconds(1));
                     printAt( 2*position[1], position[0], maze.glyphs[9]); // change the player location
                     maze.editMap(position[0], position[1], 9);
                     is_writing = false;
+                    // get into the game
+
+                    // win can get ability to break the wall
                     char playerinput = getch(); //the direction of breaking
                     //chooce the direction of wall breaking
                     while (choice == false) {
                         is_writing = true;
+                        // showing the wall going to break
                         resolvelist = checkwall(playerinput, position, maze.map2D, maze.result_width, maze.result_height, maze.glyphs[5]);
                         is_writing = false;
+                        // confirm the break
                         char playerinput2 = playerinput;
                         playerinput = getch();
                         

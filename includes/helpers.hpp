@@ -12,5 +12,6 @@ int getWinCols();
 char getch();
 void toggleEcho();
 void frame(int winCols, int winRows);
+void botton(int x, int y, std::string, std::string );
 
 #endif
