@@ -50,14 +50,15 @@ void Minigame::bar(int &pos) {
 
 
 bool Minigame::direction() {
+        int pos = 0;
         char answer[10];
         int arr[10];
 
         int col = getWinCols();
         int row = getWinRows();
 
-        int midCol = col/2;
-        int midRow = row/2;
+        int midCol = col/2;       // Clarification required (CODE NOT USED)
+        int midRow = row/2;       // Clarification required (CODE NOT USED)
 
         string arrows[4] = {"▲", "▼", "◀", "▶"};
         srand(time(NULL));
