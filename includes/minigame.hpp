@@ -7,7 +7,8 @@ public:
     Minigame();
     ~Minigame();
     int run();
-    void countdown(int duration, int x, int y);
+    void countdown(int x, int y);
+    void bar(int &pos);
     bool direction();
 };
 
