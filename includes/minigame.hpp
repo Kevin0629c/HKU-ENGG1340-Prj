@@ -8,7 +8,7 @@ public:
     ~Minigame();
     int run();
     void countdown(int x, int y);
-    void bar(int &pos);
+    void bar(int &pos, int col, int row);
     bool direction();
 };
 

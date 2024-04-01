@@ -24,27 +24,26 @@ Minigame::~Minigame()
 
 void Minigame::countdown(int x, int y) {
 
-        int timer = 15;
+        int duration = 15;
 
         for (int i = 0; i < 15; i++) {
-                string timer = "0 : 0 : " + to_string(timer-i);
+                string timer = "0 : 0 : " + to_string(duration-i);
                 printAt(x, y, timer);
                 this_thread::sleep_for(chrono::seconds(1));
                 clearScreen();                                           //Exit the scene
         }
 
-        if (timer == 0) {
+        if (duration == 0) {
                 exit(0);
-                return 1;
         }
 
 } 
 
-void Minigame::bar(int &pos) {
+void Minigame::bar(int &pos, int col, int row) {
     string empty(10 - pos, '\u25AF');
     string process(pos, '\u2592');
-    printAt(winCols - 29, (winRows / 2) + 10, empty);
-    printAt(winCols - 29 + 10 * pos, (winRows / 2) + 10, process);
+    printAt(col - 29, (row / 2) + 10, empty);
+    printAt(col - 29 + 10 * pos, (row / 2) + 10, process);
     clearScreen();
 }
 
@@ -157,7 +156,7 @@ int Minigame::run()
             exit(0);
         } else {
                 count++;
-                bar(pos);                     // Call the bar function passing pos as a reference
+                bar(pos,winCols,winRows);                     // Call the bar function passing pos as a reference
                 printAt(2, 3, "Chances left : "+ to_string(4-count));
                 run();
 
