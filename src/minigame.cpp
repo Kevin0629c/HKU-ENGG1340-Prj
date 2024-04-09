@@ -27,10 +27,12 @@ void Minigame::countdown(int x, int y) {
         int duration = 15;
 
         for (int i = 0; i < 15; i++) {
-                string timer = "0 : 0 : " + to_string(duration-i);
+                string timer = to_string(duration - i);
+                if (timer.length() < 2) {
+                        timer = "0" + timer;
+                }
                 printAt(x, y, timer);
                 this_thread::sleep_for(chrono::seconds(1));
-                clearScreen();                                           //Exit the scene
         }
 
         if (duration == 0) {
@@ -40,8 +42,8 @@ void Minigame::countdown(int x, int y) {
 } 
 
 void Minigame::bar(int &pos, int col, int row) {
-    string empty(10 - pos, '\u25AF');
-    string process(pos, '\u2592');
+    string empty(10 - pos, ' ');
+    string process(pos, '-');
     printAt(col - 29, (row / 2) + 10, empty);
     printAt(col - 29 + 10 * pos, (row / 2) + 10, process);
     clearScreen();
@@ -138,6 +140,7 @@ int Minigame::run()
 {
         int winCols = getWinCols();
         int winRows = getWinRows();
+        int count = 0;
 
         frame(winCols, winRows); 
 
@@ -153,7 +156,6 @@ int Minigame::run()
 
         if (direction()) {
             printAt(47, 15, "Yeahhhh");
-            exit(0);
         } else {
                 count++;
                 bar(pos,winCols,winRows);                     // Call the bar function passing pos as a reference
@@ -161,7 +163,6 @@ int Minigame::run()
                 run();
 
                 if (count==4) {
-                        exit(0);             // you fail
                         return 1;
                 }
         }
