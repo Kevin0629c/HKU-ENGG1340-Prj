@@ -36,7 +36,7 @@ void Minigame::countdown(int x, int y) {
         }
 
         if (duration == 0) {
-                exit(0);
+                return 0;
         }
 
 } 
@@ -156,6 +156,7 @@ int Minigame::run()
 
         if (direction()) {
             printAt(47, 15, "Yeahhhh");
+            return 0;
         } else {
                 count++;
                 bar(pos,winCols,winRows);                     // Call the bar function passing pos as a reference
