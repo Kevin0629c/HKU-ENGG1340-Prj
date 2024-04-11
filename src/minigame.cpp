@@ -9,8 +9,6 @@
 
 using namespace std;
 
-int count = 0;
-
 Minigame::Minigame()
 {
 }
@@ -21,22 +19,57 @@ Minigame::~Minigame()
 
 /* ▲ ▼ ◀ ▶ */
 
-void Minigame::countdown(int duration, int x, int y) {
+bool Minigame::countdown(int winCols, int winRows) {
 
-        int remaining_time = duration;
+        int duration=15;
+        string bar_symbol = "■ ";
 
-        for (int i = 0; i < 15; i++) {
-                string timer = "0 : 0 : " + to_string(remaining_time-i);
-                printAt(x, y, timer);
-                this_thread::sleep_for(chrono::seconds(1));
+        string line = "0 : 0 : 00";
+        int mid_col = (winCols-line.size())/2;
+        int mid_col1 = (winCols-29)/2;
+
+        for (int i = 0; i <= 15; i++) {
+
+                if (i<=5) {
+                        string timer = "0 : 0 : " + to_string(duration-i);
+                        printAt(mid_col, 2, timer);
+
+                        string bar;
+                        for (int j=0;j<duration-i;j++) {
+                                bar+=bar_symbol;
+                        }
+                        printAt(mid_col1, 1, bar);
+                        
+                        this_thread::sleep_for(chrono::seconds(1));
+                        printAt(mid_col1, 1, "                               ");
+                } else if (i>5) {
+                        string timer = "0 : 0 : 0" + to_string(duration-i);
+                        printAt(mid_col, 2, timer);
+
+                        string bar;
+                        for (int j=0;j<duration-i;j++) {
+                                bar+=bar_symbol;
+                        }
+                        printAt(mid_col1, 1, bar);
+
+                        this_thread::sleep_for(chrono::seconds(1));
+                        printAt(mid_col1, 1, "                               ");
+                }
+                if (i==15) {
+                        string quote =  "Oops! Time's out";
+                        int mid_col2 = (winCols-quote.size())/2;
+                        printAt(mid_col2, 1, quote);
+
+                        this_thread::sleep_for(chrono::seconds(1));
+                        return false;  
+                } 
+
+                if (stopCountdown) {
+                        return false;
+                }
         }
-
-        if (remaining_time==0) {
-                exit(0);
-        }
-
+        return false;
 } 
-
 
 bool Minigame::direction() {
         char answer[10];
@@ -45,8 +78,9 @@ bool Minigame::direction() {
         int col = getWinCols();
         int row = getWinRows();
 
-        int midCol = col/2;
-        int midRow = row/2;
+        int midcol = (col-68)/2;
+        int midrow = (row-5)/2;
+
 
         string arrows[4] = {"▲", "▼", "◀", "▶"};
         srand(time(NULL));
@@ -55,11 +89,13 @@ bool Minigame::direction() {
                 arr[i] = number;
         };
 
-        printAt(2, 2, "Enter the corresponding arrow (wasd)");
+        string quote = "Enter the corresponding arrow (wasd)";
+        int midcol1 = (col-quote.size())/2;
+        printAt(midcol1, midrow+4, quote);
 
-        printAt(20, 10, "╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮");
-        printAt(20, 11, "│ " + arrows[arr[0]] + " │  │ " + arrows[arr[1]] + " │  │ " + arrows[arr[2]] + " │  │ " + arrows[arr[3]] + " │  │ " + arrows[arr[4]] + " │  │ " + arrows[arr[5]] + " │  │ " + arrows[arr[6]] + " │  │ " + arrows[arr[7]] + " │  │ " + arrows[arr[8]] + " │  │ " + arrows[arr[9]] + " │");
-        printAt(20, 12, "╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯");
+        printAt(midcol, midrow, "╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮");
+        printAt(midcol, midrow+1, "│ " + arrows[arr[0]] + " │  │ " + arrows[arr[1]] + " │  │ " + arrows[arr[2]] + " │  │ " + arrows[arr[3]] + " │  │ " + arrows[arr[4]] + " │  │ " + arrows[arr[5]] + " │  │ " + arrows[arr[6]] + " │  │ " + arrows[arr[7]] + " │  │ " + arrows[arr[8]] + " │  │ " + arrows[arr[9]] + " │");
+        printAt(midcol, midrow+2, "╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯");
 
 /* ▲ ▼ ◀ ▶ */
         for (int i = 0; i < 10; ++i) {
@@ -81,127 +117,60 @@ bool Minigame::direction() {
                 printAt(3, 3, "wrong");
         }
         }        
-
-        printAt(20, 13, "____________________________________________________________________");
                 
         string output[10] ={arrows[arr[0]], arrows[arr[1]], arrows[arr[2]], arrows[arr[3]], arrows[arr[4]], arrows[arr[5]], arrows[arr[6]], arrows[arr[7]], arrows[arr[8]], arrows[arr[9]]};
 
         for (int i = 0; i < 10; i++) {
                 char input = getch();
                 if (input != answer[i]) {
-                        printAt(10, 5, "Oops");
-                        return 0;
+                        string quote="         Oops! Wrong input :(         ";
+                        int mid_col1 = (col-quote.size())/2;
+                        printAt(mid_col1,midrow+4,quote);
+                        return false;
                 } else if (input == answer[i]) {
                         output[i] = "✔";
-                        printAt(20, 10, "╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮");
-                        printAt(20, 11, "│ " + output[0] + " │  │ " + output[1] + " │  │ " + output[2] + " │  │ " + output[3] + " │  │ " + output[4] + " │  │ " + output[5] + " │  │ " + output[6] + " │  │ " + output[7] + " │  │ " + output[8] + " │  │ " + output[9] + " │");
-                        printAt(20, 12, "╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯");
+                        printAt(midcol, midrow, "╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮");
+                        printAt(midcol, midrow+1, "│ " + output[0] + " │  │ " + output[1] + " │  │ " + output[2] + " │  │ " + output[3] + " │  │ " + output[4] + " │  │ " + output[5] + " │  │ " + output[6] + " │  │ " + output[7] + " │  │ " + output[8] + " │  │ " + output[9] + " │");
+                        printAt(midcol, midrow+2, "╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯");
                         if (output[9]=="✔") 
-                                return 1;
+                                return true;
                 }
         }   
 
 }
 
-/*void check() {
-        for (int i = 0; i < 5; ++i) {
-                char input;
-                cin >> input;
-                if (input != arr[i])
-                        return false;
-        
-        }
-        return true
-} */
-
-
-/*╭──────╮
-  │      │
-  ╰──────╯*/
-
-int Minigame::run()
+bool Minigame::run()
 {
         int winCols = getWinCols();
         int winRows = getWinRows();
-
+ 
         frame(winCols, winRows); 
 
-        printAt(5, 5, "Press any key to start");
+        string quote = "Press any key to start";
+        int mid_col = (winCols-quote.size())/2;
+        int mid_row = (winRows-1)/2;
+        printAt(mid_col, mid_row,quote);
         char c = getch();
-        printAt(5, 5, "                      ");
+        printAt(mid_col, mid_row, "                      ");
 
+        bool countdown_result=true;
         thread countdown_thread([&]() {
-                countdown(15, 40, 0);
+                countdown_result=countdown(winCols, winRows);
         });
 
-        if (direction()) {
-            printAt(47, 15, "Yeahhhh");
-            exit(0);
-        } else {
-                count++;
-                printAt()
-                printAt(2, 3, "Chances left : "+ to_string(4-count));
-                run();
+        bool result;
+        result = direction();
 
-                if (count==4) {
-                        exit(0);
-                }
-        }
-
-        countdown_thread.join();
-
-        return 0;
-}
-
-/*(✓, ✔,✓     for (int i = 0; i < 10; ++i) {
-                char input = getch();
-                if (input != answer[i]) {
-                        printAt(10, 5, "Oops");
-                        return 1;
-                } else if (input == answer[i]) {
-                        printAt(20, 10, "╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮");
-                        printAt(20, 11, "│ " + "✔" + " │  │ " + arrows[arr[1]] + " │  │ " + arrows[arr[2]] + " │  │ " + arrows[arr[3]] + " │  │ " + arrows[arr[4]] + " │  │ " + arrows[arr[5]] + " │  │ " + arrows[arr[6]] + " │  │ " + arrows[arr[7]] + " │  │ " + arrows[arr[8]] + " │  │ " + arrows[arr[9]] + " │");
-                        printAt(20, 12, "╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯");
-                        continue;
-                }
-        }
-        return 0;
-        
-} */
-
-/*void check() {
-        for (int i = 0; i < 5; ++i) {
-                char input;
-                cin >> input;
-                if (input != arr[i])
-                 return false;
-        
-        }
-        return true
-} */
-
-
-/*╭──────╮
-  │      │
-  ╰──────╯
-
-int Minigame::run()
-{
-        int winCols = getWinCols();
-        int winRows = getWinRows();
-
-        frame(winCols, winRows); 
-
-        printAt(5, 5, "Press any key to start");
-        char c = getch();
-        printAt(5, 5, "                      ");
-
-        if (direction() == false) {
-                printAt(10, 5, "     ");
-                exit(0);
+        if (result) {
+                int midrow = (winRows-5)/2;
+                string quote1 = "            Wohoooo nice!            ";
+                int mid_col1 = (winCols-quote1.size())/2;
+                printAt(mid_col1,midrow+4,quote1);
+                return 1;
+        } else if (countdown_result==false || result==false) {
+                return 0;
         } 
 
+        countdown_thread.join();
         return 0;
 }
-
-(✓, ✔,✓*/

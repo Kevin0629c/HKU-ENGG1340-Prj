@@ -4,6 +4,7 @@
 #include "gameloop.hpp"
 #include "pagedmenu.hpp"
 #include <chrono>
+#include "minigame.hpp"
 
 using namespace std;
 
@@ -17,32 +18,10 @@ int main()
     }
 
     cursorHide();
-
-    while (true)
-    {
-        PagedMenu menu;                    //Linkage with pagedmenu setting requried
-        int response = menu.displayMenu();
-        if (response == -1)                           //May change to 0 according pagedmenu
-        {
-            return 0; // Quit the game
-        }
-        else
-        {
-            Gameloop game(response);
-            int game_result = game.run();
-            if (game_result == 0)
-            {
-                cout << "You LOSE!!!" << endl;
-                // Handle lost state
-            }
-            else if (game_result == 1)
-            {
-                cout << "You WIN!!!" << endl;
-                // Handle win state
-            }
-        }
-    }
-
+    
+    Minigame minigame;
+    int hi = minigame.run();
+    
     cursorShow();
 
     return 0;
