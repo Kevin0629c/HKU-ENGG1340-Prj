@@ -147,8 +147,8 @@ int Gameloop::run(State loadedGameState)
 
     int winCols = getWinCols();
     int winRows = getWinRows();
-    bool the_first_move; // check if player had moved since key pressed
-    bool choice; // check if player had choosen the direction of breaking wall
+    bool the_first_move;     // check if player had moved since key pressed
+    bool choice;             // check if player had choosen the direction of breaking wall
     bool is_writing = false; // check if the screen is writing
 
     Maze2D maze(winCols / 2 - 2, (winRows % 2 == 0 ? winRows + 1 : winRows) - 2, rand(), loadedGameState.Map2D);
@@ -156,7 +156,7 @@ int Gameloop::run(State loadedGameState)
     gameState = loadedGameState;
     clearScreen();
     maze.printMap();
-    
+
     timer.start();
     while (true)
     {
@@ -183,7 +183,7 @@ int Gameloop::run(State loadedGameState)
             clearScreen();
             frame(winCols, winRows);
             string m = "Game saved to " + savedTo + ". Press any key to continue.";
-            printAt(winCols/2 - m.length()/2, winRows/2, m);
+            printAt(winCols / 2 - m.length() / 2, winRows / 2, m);
             getch();
             return 2;
         }
@@ -200,8 +200,8 @@ int Gameloop::run(State loadedGameState)
                 printAt(2 * gameState.position[1], gameState.position[0], maze.glyphs[8]); // change the moved space
                 maze.editMap(gameState.position[0], gameState.position[1], 8);             // edit the map
 
-                gameState.position[0] += lookup[input][1];          // move the player
-                gameState.position[1] += lookup[input][0];          // move the player
+                gameState.position[0] += lookup[input][1];                                 // move the player
+                gameState.position[1] += lookup[input][0];                                 // move the player
                 printAt(2 * gameState.position[1], gameState.position[0], maze.glyphs[9]); // change the player location
                 is_writing = false;
 

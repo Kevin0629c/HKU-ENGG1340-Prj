@@ -35,7 +35,9 @@ Maze2D::Maze2D(int theWidth, int theHeight, int theSeed, int **theMap2D = nullpt
     {
         isMapProvided = true;
         map2D = theMap2D;
-    } else {
+    }
+    else
+    {
         // create the 2D array for the MST algorithm
         grid2D = new int *[height];
         for (int i = 0; i < height; i++)
@@ -61,7 +63,6 @@ Maze2D::Maze2D(int theWidth, int theHeight, int theSeed, int **theMap2D = nullpt
         kruskalize();
         generateMaze();
     }
-
 }
 
 /* -------------- Utils ------------- */
@@ -102,12 +103,14 @@ Maze2D::~Maze2D()
     for (int c = 0; c < height; ++c)
     {
         delete[] map2D[c];
-        if (!isMapProvided) {
+        if (!isMapProvided)
+        {
             delete[] grid2D[c];
         }
     }
     delete[] map2D;
-    if (!isMapProvided) {
+    if (!isMapProvided)
+    {
         delete[] grid2D;
     }
 }
