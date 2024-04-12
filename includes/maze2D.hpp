@@ -14,6 +14,7 @@ class Maze2D
     int width; 
     int height;
     int seed;
+    bool isMapProvided = false;
 
     /* ------------- Private ------------ */
     int **grid2D;
@@ -23,7 +24,7 @@ class Maze2D
     void kruskalize();
     void generateMaze();
 public:
-    Maze2D(int theWidth, int theHeight, int theSeed); // Constructor TODO: GLYPHS
+    Maze2D(int theWidth, int theHeight, int theSeed, int** theMap2D);
 
     /* ------------- Params ------------- */
     unordered_map<int, string> glyphs;  

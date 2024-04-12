@@ -6,11 +6,13 @@
 #include <unistd.h>
 using namespace std;
 
-void cursorHide() {
+void cursorHide()
+{
     cout << "\033[?25l";
 }
 
-void cursorShow() {
+void cursorShow()
+{
     cout << "\033[?25h";
 }
 
@@ -25,11 +27,16 @@ void printAt(int x, int y, string s)
     // Save current cursor position
     cout << "\033[s";
     // Move cursor to x, y
-    cout << "\033[" << y +1 << ";" << x +1 << "H";
+    cout << "\033[" << y + 1 << ";" << x + 1 << "H";
     // Print character
     cout << s;
     // Restore saved cursor position
     cout << "\033[u" << flush;
+}
+
+void moveCursorTo(int x, int y)
+{
+    cout << "\033[" << y + 1 << ";" << x + 1 << "H";
 }
 
 void clearScreen()
@@ -81,7 +88,8 @@ void toggleEcho()
     Get the number of rows in the terminal
     Returns the number of rows
 */
-int getWinRows() {
+int getWinRows()
+{
     struct winsize size;
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &size);
     return size.ws_row;
@@ -91,7 +99,8 @@ int getWinRows() {
     Get the number of columns in the terminal
     Returns the number of columns
 */
-int getWinCols() {
+int getWinCols()
+{
     struct winsize size;
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &size);
     return size.ws_col;
@@ -99,25 +108,28 @@ int getWinCols() {
 /*
     build a UI frame based on the size of console
 */
-void frame(int winCols, int winRows) {
+void frame(int winCols, int winRows)
+{
 
     cout << "╔";
-    for (int i = 0; i < winCols - 2; i++) 
+    for (int i = 0; i < winCols - 2; i++)
     {
         cout << "═";
     }
     cout << "╗" << endl;
-    
-    for (int i = 1; i < winRows - 2; i++) {
-        cout << "║" ;
-        for (int j = 1; j < winCols - 1; j++){
+
+    for (int i = 1; i < winRows - 2; i++)
+    {
+        cout << "║";
+        for (int j = 1; j < winCols - 1; j++)
+        {
             cout << " ";
         }
         cout << "║" << endl;
     }
 
     cout << "╚";
-    for (int i = 0; i < winCols - 2; i++) 
+    for (int i = 0; i < winCols - 2; i++)
     {
         cout << "═";
     }
@@ -126,14 +138,14 @@ void frame(int winCols, int winRows) {
 /*
     build a thin frame for the word inputed(used only for the menu "play" and "quit" botton)(not suitable for all words)
 */
-void botton(int x, int y, string colors, string s )
+void botton(int x, int y, string colors, string s)
 {
     string top = R"(╭──────╮)";
     string mid = R"(│      │)";
     string bot = R"(╰──────╯)";
 
-    printAt(x-2,y-1,colors + top);
-    printAt(x-2,y,colors + mid);
-    printAt(x,y,colors + s);
-    printAt(x-2,y+1, colors + bot);    
+    printAt(x - 2, y - 1, colors + top);
+    printAt(x - 2, y, colors + mid);
+    printAt(x, y, colors + s);
+    printAt(x - 2, y + 1, colors + bot);
 }

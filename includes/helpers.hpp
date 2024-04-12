@@ -6,6 +6,7 @@
 void cursorHide();
 void cursorShow();
 void printAt(int, int, std::string);
+void moveCursorTo(int, int);
 void clearScreen();
 int getWinRows();
 int getWinCols();
