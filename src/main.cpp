@@ -20,6 +20,7 @@ int main()
     }
 
     cursorHide();
+
     toggleEcho();
 
     Gameloop game;
@@ -64,22 +65,21 @@ int main()
         {
             // Handle lose state
             // Print lose statement in the middle of the screen with ASCII art
-            string loseStatement = R"(
- __      __  ______   __    __  __  _______   ________        __         ______    ______   ________  __ 
-/  \    /  |/      \ /  |  /  |/  |/       \ /        |      /  |       /      \  /      \ /        |/  |
-$$  \  /$$//$$$$$$  |$$ |  $$ |$$/ $$$$$$$  |$$$$$$$$/       $$ |      /$$$$$$  |/$$$$$$  |$$$$$$$$/ $$ |
- $$  \/$$/ $$ |  $$ |$$ |  $$ |$/  $$ |__$$ |$$ |__          $$ |      $$ |  $$ |$$ \__$$/    $$ |   $$ |
-  $$  $$/  $$ |  $$ |$$ |  $$ |    $$    $$< $$    |         $$ |      $$ |  $$ |$$      \    $$ |   $$ |
-   $$$$/   $$ |  $$ |$$ |  $$ |    $$$$$$$  |$$$$$/          $$ |      $$ |  $$ | $$$$$$  |   $$ |   $$/ 
-    $$ |   $$ \__$$ |$$ \__$$ |    $$ |  $$ |$$ |_____       $$ |_____ $$ \__$$ |/  \__$$ |   $$ |    __ 
-    $$ |   $$    $$/ $$    $$/     $$ |  $$ |$$       |      $$       |$$    $$/ $$    $$/    $$ |   /  |
-    $$/     $$$$$$/   $$$$$$/      $$/   $$/ $$$$$$$$/       $$$$$$$$/  $$$$$$/   $$$$$$/     $$/    $$/ 
-)";
 
-            int loseStatementRows = count(loseStatement.begin(), loseStatement.end(), '\n') + 1;
-            int loseStatementCols = loseStatement.find('\n');
-            int loseStatementX = winCols / 2 - loseStatementCols / 2;
-            int loseStatementY = winRows / 2 - loseStatementRows / 2;
+            string loseStatement = R"(
+             __      __  ______   __    __  __  _______   ________        __         ______    ______   ________  __ 
+            /  \    /  |/      \ /  |  /  |/  |/       \ /        |      /  |       /      \  /      \ /        |/  |
+            $$  \  /$$//$$$$$$  |$$ |  $$ |$$/ $$$$$$$  |$$$$$$$$/       $$ |      /$$$$$$  |/$$$$$$  |$$$$$$$$/ $$ |
+             $$  \/$$/ $$ |  $$ |$$ |  $$ |$/  $$ |__$$ |$$ |__          $$ |      $$ |  $$ |$$ \__$$/    $$ |   $$ |
+              $$  $$/  $$ |  $$ |$$ |  $$ |    $$    $$< $$    |         $$ |      $$ |  $$ |$$      \    $$ |   $$ |
+               $$$$/   $$ |  $$ |$$ |  $$ |    $$$$$$$  |$$$$$/          $$ |      $$ |  $$ | $$$$$$  |   $$ |   $$/ 
+                $$ |   $$ \__$$ |$$ \__$$ |    $$ |  $$ |$$ |_____       $$ |_____ $$ \__$$ |/  \__$$ |   $$ |    __ 
+                $$ |   $$    $$/ $$    $$/     $$ |  $$ |$$       |      $$       |$$    $$/ $$    $$/    $$ |   /  |
+                $$/     $$$$$$/   $$$$$$/      $$/   $$/ $$$$$$$$/       $$$$$$$$/  $$$$$$/   $$$$$$/     $$/    $$/ 
+            )";
+
+            int loseStatementX = winCols / 2 - loseStatement.find('\n') / 2;
+            int loseStatementY = winRows / 2;
 
             printAt(loseStatementX, loseStatementY, loseStatement);
             // Clear the lose statement
@@ -91,39 +91,38 @@ $$  \  /$$//$$$$$$  |$$ |  $$ |$$/ $$$$$$$  |$$$$$$$$/       $$ |      /$$$$$$  
             continue;
         }
         
-            else if (game_result == 1)
-            {   
-                // Handle win state
-                // Print win statement in the middle of the screen with ASCII art
-                string winStatement = R"(
-                 _______   _______   ________   ______   __    __         ______   __    __  ________  __ 
-                /       \ /       \ /        | /      \ /  |  /  |       /      \ /  |  /  |/        |/  |
-                $$$$$$$  |$$$$$$$  |$$$$$$$$/ /$$$$$$  |$$ | /$$/       /$$$$$$  |$$ |  $$ |$$$$$$$$/ $$ |
-                $$ |__$$ |$$ |__$$ |$$ |__    $$ |__$$ |$$ |/$$/        $$ |  $$ |$$ |  $$ |   $$ |   $$ |
-                $$    $$< $$    $$< $$    |   $$    $$ |$$  $$<         $$ |  $$ |$$ |  $$ |   $$ |   $$ |
-                $$$$$$$  |$$$$$$$  |$$$$$/    $$$$$$$$ |$$$$$  \        $$ |  $$ |$$ |  $$ |   $$ |   $$/ 
-                $$ |__$$ |$$ |  $$ |$$ |_____ $$ |  $$ |$$ |$$  \       $$ \__$$ |$$ \__$$ |   $$ |    __ 
-                $$    $$/ $$ |  $$ |$$       |$$ |  $$ |$$ | $$  |      $$    $$/ $$    $$/    $$ |   /  |
-                $$$$$$$/  $$/   $$/ $$$$$$$$/ $$/   $$/ $$/   $$/        $$$$$$/   $$$$$$/     $$/    $$/ 
-                )";
+        else if (game_result == 1)
+        {   
+            // Handle win state
+            // Print win statement in the middle of the screen with ASCII art
+            string winStatement = R"(
+                _______   _______   ________   ______   __    __         ______   __    __  ________  __ 
+            /       \ /       \ /        | /      \ /  |  /  |       /      \ /  |  /  |/        |/  |
+            $$$$$$$  |$$$$$$$  |$$$$$$$$/ /$$$$$$  |$$ | /$$/       /$$$$$$  |$$ |  $$ |$$$$$$$$/ $$ |
+            $$ |__$$ |$$ |__$$ |$$ |__    $$ |__$$ |$$ |/$$/        $$ |  $$ |$$ |  $$ |   $$ |   $$ |
+            $$    $$< $$    $$< $$    |   $$    $$ |$$  $$<         $$ |  $$ |$$ |  $$ |   $$ |   $$ |
+            $$$$$$$  |$$$$$$$  |$$$$$/    $$$$$$$$ |$$$$$  \        $$ |  $$ |$$ |  $$ |   $$ |   $$/ 
+            $$ |__$$ |$$ |  $$ |$$ |_____ $$ |  $$ |$$ |$$  \       $$ \__$$ |$$ \__$$ |   $$ |    __ 
+            $$    $$/ $$ |  $$ |$$       |$$ |  $$ |$$ | $$  |      $$    $$/ $$    $$/    $$ |   /  |
+            $$$$$$$/  $$/   $$/ $$$$$$$$/ $$/   $$/ $$/   $$/        $$$$$$/   $$$$$$/     $$/    $$/ 
+            )";
 
-                int winStatementRows = count(winStatement.begin(), winStatement.end(), '\n') + 1;
-                int winStatementCols = winStatement.find('\n');
-                int winStatementX = winCols / 2 - winStatementCols / 2;
-                int winStatementY = winRows / 2 - winStatementRows / 2;
+            int winStatementX = winCols / 2 - winStatement.find('\n')/ 2;
+            int winStatementY = winRows / 2;
 
-                printAt(winStatementX, winStatementY, winStatement);
-                // Clear the win statement
-                clearScreen();
-                // Wait for 2 seconds
-                this_thread::sleep_for(chrono::seconds(2));
+            printAt(winStatementX, winStatementY, winStatement);
+            // Clear the win statement
+            clearScreen();
+            // Wait for 2 seconds
+            this_thread::sleep_for(chrono::seconds(2));
 
-                // Return to the main menu
-                continue;
-            }
+            // Return to the main menu
+            continue;
+        }
     cursorShow();
 
     return 0;
+    }
 }
 
 /* Win Screen
