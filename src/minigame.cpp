@@ -64,7 +64,6 @@ bool Minigame::countdown(int col, int row) { // countdown timer with a bar shown
                         this_thread::sleep_for(chrono::seconds(1));
                         return false;  
                 } 
-
                 if (stopCountdown) { // if user input the wrong input, the timer stops //
                         return false;
                 }
@@ -148,7 +147,7 @@ bool Minigame::run()
 {
         int winCols = getWinCols();
         int winRows = getWinRows();
- 
+  
         frame(winCols, winRows); 
 
         string quote = "Press any key to start";        // start screen //
