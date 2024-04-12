@@ -1,9 +1,11 @@
 {
-    "files.associations": {
-        "thread": "cpp",
-        "chrono": "cpp",
-        "iostream": "cpp",
-        "random": "cpp",
-        "ostream": "cpp"
-    }
+  "files.associations": {
+    "*.txt": "markdown",
+    "thread": "cpp",
+    "chrono": "cpp",
+    "iostream": "cpp",
+    "random": "cpp",
+    "ostream": "cpp",
+    "string": "cpp"
+  }
 }

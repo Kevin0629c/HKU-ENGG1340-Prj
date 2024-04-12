@@ -148,7 +148,6 @@ int Gameloop::run()
     int winCols = getWinCols();
     int winRows = getWinRows();
     int position[2] = {1, 1}; // row / col
-    char input;
     bool the_first_move;
     bool choice;
     // cout << "winCols: " << winCols << endl;
@@ -156,7 +155,7 @@ int Gameloop::run()
     clearScreen();
     Maze2D maze(winCols / 2 - 2, (winRows % 2 == 0 ? winRows + 1 : winRows) - 2, 0);
     maze.printMap();
-    maze.map2D;
+    
     bool is_writing = false;
     Timer timer(&is_writing, 0, winCols / 2 - 7);
     timer.start();
@@ -201,7 +200,10 @@ int Gameloop::run()
                     maze.editMap(position[0], position[1], 9);
                     is_writing = false;
                     // get into the game
+                    timer.pause();
+                    clearScreen();
                     int minigame_result = Minigame().run();
+                    cout << "minigame_result: " << minigame_result << endl;
                     if (minigame_result == 1)
                     {
                         // win can get ability to break the wall
@@ -258,6 +260,7 @@ int Gameloop::run()
                             }
                         }
                     }
+                    timer.start();
                     break;
                 }
                 maze.editMap(position[0], position[1], 9);
