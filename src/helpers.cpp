@@ -32,6 +32,11 @@ void printAt(int x, int y, string s)
     cout << "\033[u" << flush;
 }
 
+void moveCursorTo(int x, int y)
+{
+    cout << "\033[" << y +1 << ";" << x +1 << "H";
+}
+
 void clearScreen()
 {
     // CSI[2J clears screen, CSI[H moves the cursor to top-left corner

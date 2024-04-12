@@ -23,7 +23,7 @@ class Maze2D
     void kruskalize();
     void generateMaze();
 public:
-    Maze2D(int theWidth, int theHeight, int theSeed); // Constructor TODO: GLYPHS
+    Maze2D(int theWidth, int theHeight, int theSeed, int** theMap2D);
 
     /* ------------- Params ------------- */
     unordered_map<int, string> glyphs;  

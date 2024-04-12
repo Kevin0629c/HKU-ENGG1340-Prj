@@ -27,9 +27,9 @@ int PagedMenu::displayMenu()
     string mid = R"(│      │)";
     string bot = R"(╰──────╯)";
 
-    string play = R"(PLAY)";                                                            // the pattern of play
-
-    string quit = R"(QUIT)";                                                            // the pattern of quit
+    string play = "PLAY";                                                            // the pattern of play
+    string load = "LOAD";                                                            // the pattern of load
+    string quit = "QUIT";                                                            // the pattern of quit
 
     frame(winCols,winRows);                                                             // the UI frame
     printAt(0,(winRows/2)-7,R"(x
@@ -44,32 +44,36 @@ x    | |_) |  _ <| |___ / ___ \| . \ |_| | |_| | | |
 x    |____/|_| \_\_____/_/   \_\_|\_\___/ \___/  |_|  
 x)");                        // the title showed in UI
 
-    botton(65,(winRows/2)-3,COLOR_GREEN, play);                                // botton is a function in helers.cpp which helps 
-                                                                                       // building a thin frame around the words
-    botton(65,(winRows/2)+0,COLOR_DEFAULT,quit);                               // botton(x_coor of the word, y_coor of the word, colour , word to be showed)
+    int offsetY = -5;
+    int bottonH = 3;
 
-    
+    botton(60,(winRows/2)+offsetY,COLOR_GREEN, play);                                // botton is a function in helers.cpp which helps 
+    botton(60, (winRows/2)+offsetY+bottonH, COLOR_DEFAULT, load);                                                                                   // building a thin frame around the words
+    botton(60,(winRows/2+offsetY+bottonH*2),COLOR_DEFAULT,quit);                               // botton(x_coor of the word, y_coor of the word, colour , word to be showed)
 
     char userinput ;                                                                    // detect user input
-    userinput = getch();                                                                
 
-    while (userinput != 'D'&& userinput != 'd')                                         // D is the botton for confriming the choice
-    {
-
-        botton(65,(winRows/2)-3,COLOR_DEFAULT, play);                           // changes colour when playing moving their choices
-        botton(65,(winRows/2)+0,COLOR_DEFAULT,quit);
-        if (userinput == 'W' || userinput == 'w')                                       // the play botton is on the top so "W" is used to move to the top 
-        {
-            botton(65,(winRows/2)-3,COLOR_GREEN, play);                         // the botton of "PLAY" changes to green when player moves the choice to that
-            response = 0;                                                               // response = 0 = play
+    do {
+        userinput = getch();
+        switch (userinput) {
+            case 'w':
+                // Move up
+                if (response > 0) {
+                    response--;
+                }
+                break;
+            case 's':
+                // Move down
+                if (response < 2) {
+                    response++;
+                }
+                break;
         }
-        else if (userinput == 'S' || userinput == 's')                                  // the quit botton is at the bottom so "S" is used 
-        {
-            botton(65,(winRows/2)+0,COLOR_RED,quit);
-            response = -1;                                                              // response = -1 = quit
-        }
-        userinput = getch();                                                            // getting the next userinput
-    }
+        // Update the buttons
+        botton(60, (winRows/2)+offsetY, (response == 0) ? COLOR_GREEN : COLOR_DEFAULT, play);
+        botton(60, (winRows/2)+offsetY+bottonH, (response == 1) ? COLOR_YELLOW : COLOR_DEFAULT, load);
+        botton(60, (winRows/2+offsetY+bottonH*2), (response == 2) ? COLOR_RED : COLOR_DEFAULT, quit);
+    } while (userinput != '\n');
 
     return response;                                                                    // outputing the choice of player
 }

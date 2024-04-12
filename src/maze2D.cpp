@@ -11,47 +11,56 @@
 
 using namespace std;
 
-
 /* ----------- Constructor ---------- */
-Maze2D::Maze2D(int theWidth, int theHeight, int theSeed)
+Maze2D::Maze2D(int theWidth, int theHeight, int theSeed, int **theMap2D = nullptr)
 {
-        width = theWidth / 2 ; // divide by 4 as each cell has 2 chars, and the alogrithm takes in half the dimension
-        height = theHeight / 2;
-        seed = theSeed;
-        result_width = (theWidth % 2 == 0 ? theWidth + 1 : theWidth);
-        result_height = theHeight;
-
-        // create the 2D array for the MST algorithm
-       grid2D = new int*[height];
-        for (int i = 0; i < height; i++) {
-            grid2D[i] = new int[width];
-        }
-
-    // Initialize the array
-    for (int i = 0; i < height; i++) {
-        for (int j = 0; j < width; j++) {
-            grid2D[i][j] = width * i + j;
-        }
-    }
-    
-    map2D = new int*[result_height];
-    for (int i = 0; i < result_height; i++) {
-        map2D[i] = new int[result_width];
-    }
+    width = theWidth / 2; // divide by 4 as each cell has 2 chars, and the alogrithm takes in half the dimension
+    height = theHeight / 2;
+    seed = theSeed;
+    result_width = (theWidth % 2 == 0 ? theWidth + 1 : theWidth);
+    result_height = theHeight;
 
     glyphs = {
-        {9, COLOR_BLUE + "██" + COLOR_DEFAULT},                    // player
-        {8, COLOR_BRIGHT_GARY + "██" + COLOR_DEFAULT},                   // tail
-        {1, "  "},                                                 // space
-        {0, "██"},                                                 // wall
-        {2, COLOR_YELLOW + "⟋⟋" + COLOR_DEFAULT},                  // end
+        {9, COLOR_BLUE + "██" + COLOR_DEFAULT},                            // player
+        {8, COLOR_BRIGHT_GARY + "██" + COLOR_DEFAULT},                     // tail
+        {1, "  "},                                                         // space
+        {0, "██"},                                                         // wall
+        {2, COLOR_YELLOW + "⟋⟋" + COLOR_DEFAULT},                          // end
         {3, COLOR_BG_BRIGHT_MAGENTA + COLOR_WHITE + "❂❂" + COLOR_DEFAULT}, // portal
         {5, COLOR_RED + "██"},
     };
 
+    // if the map is provided, use it
+    if (theMap2D != nullptr)
+    {
+        map2D = theMap2D;
+        return;
+    }
+
+    // create the 2D array for the MST algorithm
+    grid2D = new int *[height];
+    for (int i = 0; i < height; i++)
+    {
+        grid2D[i] = new int[width];
+    }
+
+    // Initialize the array
+    for (int i = 0; i < height; i++)
+    {
+        for (int j = 0; j < width; j++)
+        {
+            grid2D[i][j] = width * i + j;
+        }
+    }
+
+    map2D = new int *[result_height];
+    for (int i = 0; i < result_height; i++)
+    {
+        map2D[i] = new int[result_width];
+    }
+
     kruskalize();
     generateMaze();
-    
 }
 
 /* -------------- Utils ------------- */
@@ -103,34 +112,42 @@ Maze2D::~Maze2D()
 void Maze2D::generateMaze()
 {
     /*
-    To translate generated "transfers" into a 2D array, 
-    we loop through grid2D and transfers, then create 2 rows 
+    To translate generated "transfers" into a 2D array,
+    we loop through grid2D and transfers, then create 2 rows
     based on the data in those variables per iteration of the loop.
     */
     int bC, bR;
     bR = 0;
 
-    for (int r = 0; r < height; ++r) {
+    for (int r = 0; r < height; ++r)
+    {
         ++bR;
         bC = 0;
 
         map2D[bR][bC] = 0;
         ++bC;
-        if (r == 0) {
+        if (r == 0)
+        {
             map2D[bR][bC] = 9;
-        } else {
+        }
+        else
+        {
             map2D[bR][bC] = 1;
         }
         ++bC;
 
-        for (int c = 1; c < width; ++c) {
-            if (transfers[grid2D[r][c]].find(grid2D[r][c-1]) != transfers[grid2D[r][c]].end()) {
+        for (int c = 1; c < width; ++c)
+        {
+            if (transfers[grid2D[r][c]].find(grid2D[r][c - 1]) != transfers[grid2D[r][c]].end())
+            {
                 map2D[bR][bC] = 1;
-            } else {
+            }
+            else
+            {
                 map2D[bR][bC] = 0;
             }
             ++bC;
-           map2D[bR][bC] = 1;
+            map2D[bR][bC] = 1;
             ++bC;
         }
         map2D[bR][bC] = 0;
@@ -138,13 +155,17 @@ void Maze2D::generateMaze()
         ++bR;
         bC = 0;
 
-        for (int c = 0; c < width; ++c) {
+        for (int c = 0; c < width; ++c)
+        {
             map2D[bR][bC] = 0;
             ++bC;
             int key = grid2D[r][c];
-            if (r+1 < height && transfers[key].find(grid2D[r+1][c]) != transfers[key].end()) {
+            if (r + 1 < height && transfers[key].find(grid2D[r + 1][c]) != transfers[key].end())
+            {
                 map2D[bR][bC] = 1;
-            } else {
+            }
+            else
+            {
                 map2D[bR][bC] = 0;
             }
             ++bC;
@@ -157,40 +178,51 @@ void Maze2D::generateMaze()
     minigame portals to the 2D array.
     */
 
-    random_device rd; 
+    random_device rd;
     mt19937 g(rd()); // g is a random number generator, not a random number
 
     int exit_col, exit_row;
-    while (true) {
+    while (true)
+    {
         exit_col = g() % (width / 2 + 1) + width / 2; // generate numbers
-        exit_row = g() % (height ) + 1;
-            if (g() % 2 + 1 == 1) { // flip a coin to decide if the exit should be at the bottom or right edge
-                if (map2D[exit_row][result_width - 2] == 1) { // checks if the position is a valid exit position
-                    map2D[exit_row][result_width - 1] = 2; 
-                    break;
-                } else if (map2D[result_height - 2][exit_col] == 1) {
-                    map2D[result_height - 1][exit_col] = 2; 
-                    break;
-                }
+        exit_row = g() % (height) + 1;
+        if (g() % 2 + 1 == 1)
+        { // flip a coin to decide if the exit should be at the bottom or right edge
+            if (map2D[exit_row][result_width - 2] == 1)
+            { // checks if the position is a valid exit position
+                map2D[exit_row][result_width - 1] = 2;
+                break;
+            }
+            else if (map2D[result_height - 2][exit_col] == 1)
+            {
+                map2D[result_height - 1][exit_col] = 2;
+                break;
             }
         }
+    }
 
-   int portal_edge_margin = 2;
-   float portal_rate = 0.4;
+    int portal_edge_margin = 2;
+    float portal_rate = 0.4;
 
-   vector<pair<int, int> > portal_candidates;
-    for (int r = portal_edge_margin; r < result_height - portal_edge_margin; ++r) {
-        for (int c = portal_edge_margin; c < result_width - portal_edge_margin; ++c) {
+    vector<pair<int, int>> portal_candidates;
+    for (int r = portal_edge_margin; r < result_height - portal_edge_margin; ++r)
+    {
+        for (int c = portal_edge_margin; c < result_width - portal_edge_margin; ++c)
+        {
             int checking = map2D[r][c];
-            if (checking == 1) {
+            if (checking == 1)
+            {
                 int wall_count = 0;
-                vector<int> neighbors = {map2D[r][c+1], map2D[r][c-1], map2D[r+1][c], map2D[r-1][c]};
-                for (int v : neighbors) {
-                    if (v == 0) {
+                vector<int> neighbors = {map2D[r][c + 1], map2D[r][c - 1], map2D[r + 1][c], map2D[r - 1][c]};
+                for (int v : neighbors)
+                {
+                    if (v == 0)
+                    {
                         ++wall_count;
                     }
                 }
-                if (wall_count >= 3) {
+                if (wall_count >= 3)
+                {
                     portal_candidates.push_back(make_pair(r, c));
                     // cout << r << " " << c << endl;
                 }
@@ -201,20 +233,19 @@ void Maze2D::generateMaze()
     int num_portals = static_cast<int>(portal_candidates.size() * portal_rate);
 
     // Note: shuffle takes a random number generator as a third argument
-    shuffle(portal_candidates.begin(), portal_candidates.end(), g); // shuffle the candidates
-    vector<pair<int, int> > portals(portal_candidates.begin(), portal_candidates.begin() + num_portals); // first n elements of the candidiates
+    shuffle(portal_candidates.begin(), portal_candidates.end(), g);                                     // shuffle the candidates
+    vector<pair<int, int>> portals(portal_candidates.begin(), portal_candidates.begin() + num_portals); // first n elements of the candidiates
 
-    for (auto pos : portals) {
+    for (auto pos : portals)
+    {
         map2D[pos.first][pos.second] = 3;
     }
-   
-
 }
 
 void Maze2D::kruskalize()
 {
     // edge = ((r1, c1), (r2, c2)) such that grid[r][c] = key
-    vector<pair<pair<int, int>, pair<int, int> > > edges_ordered;
+    vector<pair<pair<int, int>, pair<int, int>>> edges_ordered;
 
     // First add all neighboring edges into a list
     for (int r = 0; r < height; ++r)
@@ -224,7 +255,7 @@ void Maze2D::kruskalize()
             pair<int, int> cell = make_pair(c, r);
             pair<int, int> left_cell = make_pair(c - 1, r);
             pair<int, int> down_cell = make_pair(c, r - 1);
-            vector<pair<pair<int, int>, pair<int, int> > > near;
+            vector<pair<pair<int, int>, pair<int, int>>> near;
 
             // if not a boundary cell, add edge, else ignore
             if (c > 0)
@@ -241,7 +272,7 @@ void Maze2D::kruskalize()
 
     // seed the random value
     srand(seed);
-    vector<pair<pair<int, int>, pair<int, int> > > edges;
+    vector<pair<pair<int, int>, pair<int, int>>> edges;
 
     // shuffle the ordered edges randomly into a new list
     while (!edges_ordered.empty())
