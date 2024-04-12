@@ -6,9 +6,9 @@ class Minigame
 public:
     Minigame();
     ~Minigame();
-    int run();
-    void countdown(int x, int y);
-    void bar(int &pos, int col, int row);
+    bool run();
+    bool countdown(int winCols, int winRows);
+    bool stopCountdown=false;
     bool direction();
 };
 
