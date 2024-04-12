@@ -59,4 +59,4 @@ _Notes_
 
 ## Attribution
 
-- [https://github.com/138paulmiller/PyMaze/blob/master/maze.py](Paul Miller's python maze generator inspired our Maze2D class)
+- Paul Miller's [python maze generator](https://github.com/138paulmiller/PyMaze/blob/master/maze.py) for inspired our Maze2D class
