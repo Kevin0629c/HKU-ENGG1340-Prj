@@ -1,6 +1,6 @@
 # Variables
 CXX = g++
-CXXFLAGS = -O2 -std=c++11 -I ../includes/ -Wall 
+CXXFLAGS = -w -O2 -std=c++11 -I ../includes/ -Wall 
 OBJDIR = .
 SRCDIR = ../src
 OBJS = $(addprefix $(OBJDIR)/, main.o gameloop.o helpers.o maze2D.o minigame.o pagedmenu.o disjoint.o loader.o)
