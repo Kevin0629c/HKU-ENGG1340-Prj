@@ -2,6 +2,8 @@
 
 A simple maze game. Oh also you can break walls. Oh and it's as big as your terminal.
 
+<img width="763" alt="image" src="https://github.com/EnhancedJax/HKU-ENGG1340-Prj/assets/80020581/843d6f7d-119b-4ae4-ae88-b9cc9331c6c3">
+
 ## Features
 
 - Randomly generated maze, the size of your terminal
@@ -30,9 +32,9 @@ A simple maze game. Oh also you can break walls. Oh and it's as big as your term
 | `State`, `lookup`        | Data structures for storing game status (e.g., arrays, STL containers)         |
 | `map2D**`, `grid2D**`    | Dynamic memory management (e.g., dynamic arrays, linked lists, STL containers) |
 | Save & load              | File input/output (e.g., for loading/saving game status)                       |
-| ✔                        | Program codes in multiple files (recall separate compilation)                  |
-| ✔                        | Proper indentation and naming styles                                           |
-| ✔                        | In-code documentation                                                          |
+| Yep                        | Program codes in multiple files (recall separate compilation)                  |
+| Sure                        | Proper indentation and naming styles                                           |
+| Of course                        | In-code documentation                                                          |
 
 ## Compilation and running instructions
 
