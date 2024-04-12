@@ -7,6 +7,7 @@
     "random": "cpp",
     "ostream": "cpp",
     "string": "cpp",
-    "fstream": "cpp"
+    "fstream": "cpp",
+    "bitset": "cpp"
   }
 }

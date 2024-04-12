@@ -21,11 +21,11 @@ class Timer
 public:
     double time;
     bool* is_writing;
-    Timer(bool* thePis_writing, int theRow, int theCol);
+    Timer(bool* thePis_writing, int theRow, int theCol, double thePausedTime = 0.0);
     ~Timer();
     void start();
     void pause();
-    double stop();
+    string stop();
 };
 
 class Gameloop

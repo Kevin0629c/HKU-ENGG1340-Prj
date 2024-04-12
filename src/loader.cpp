@@ -15,35 +15,28 @@ Loader::~Loader() {
 }
 
 State Loader::loadState() {
-    int winCols = getWinCols();
-    int winRows = getWinRows();
-    frame(winCols, winRows);
-    
-    string m1 = "Please enter the file name in 'states/'";
-    string m2 = "[                                   ]";
-    printAt(winCols/2 - m1.length()/2, winRows/2 - 1, m1);
-    printAt(winCols/2 - m2.length()/2, winRows/2, m2);
-    cursorShow();
-    toggleEcho();
-    moveCursorTo(winCols/2 - m2.length()/2 + 1, winRows/2);
-    cin >> file;
-    toggleEcho();
-    cursorHide();
+    State loadedState;
 
-
-    // loadedState: load the state from file contents
-    string filePath = "../states/" + file;
+    string filePath = "../states/game_state";
     ifstream inputFile(filePath);
     if (inputFile.is_open()) {
         stringstream buffer; // https://stackoverflow.com/questions/2602013/read-whole-ascii-file-into-c-stdstring
         buffer << inputFile.rdbuf();
         loadedState = buffer.str();
     } else {
-        cout << "Unable to open file. " << file << endl;
+        string m = "There are no saved states. Try saving a game by hitting P in-game.";
+
+        int winCols = getWinCols();
+        int winRows = getWinRows();
+        frame(winCols, winRows);
+
+        printAt(winCols/2 - m.length()/2, winRows/2, m);
+        getch();
     }
+    return loadedState;
 }
 
-void Loader::saveStateToFile(State gameState) {
+string Loader::saveStateToFile(State gameState) {
     string filePath = "../states/game_state";
     ofstream outputFile(filePath);
     if (outputFile.is_open()) {
@@ -51,6 +44,8 @@ void Loader::saveStateToFile(State gameState) {
         outputFile.close();
         cout << "Game state saved to file: " << filePath << endl;
     } else {
-        cout << "Unable to open file: " << filePath << endl;
+        cout << "ERROR: Unable to save file. " << filePath << endl;
+        exit(0);
     }
+    return filePath;
 }

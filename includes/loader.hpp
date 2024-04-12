@@ -11,10 +11,13 @@ struct State {
     int** Map2D = nullptr;
     int mapWidth = 0;
     int mapHeight = 0;
-    int timerPausedTime = 0;
+    int winCols = 0;
+    int winRows = 0;
+    string timerPausedTime = "0.0";
 
     friend ostream& operator<<(ostream& outputFile, const State& gameState) {
         outputFile << gameState.position[0] << " " << gameState.position[1] << endl;
+        outputFile << gameState.winCols << " " << gameState.winRows << endl;
         outputFile << gameState.mapHeight << " " << gameState.mapWidth << endl;
         for (int i = 0; i < gameState.mapHeight; i++) {
             for (int j = 0; j < gameState.mapWidth; j++) {
@@ -26,16 +29,21 @@ struct State {
         return outputFile;
     }
 
-    void operator=(string fileContents) {
-        stringstream ss(fileContents);
-        ss >> position[0] >> position[1];
-        for (int i = 0; i < 2; i++) {
-            for (int j = 0; j < 2; j++) {
-                ss >> Map2D[i][j];
-            }
+    State& operator=(const string& fileContents) {
+    stringstream ss(fileContents);
+    ss >> position[0] >> position[1];
+    ss >> winCols >> winRows;
+    ss >> mapHeight >> mapWidth;
+    Map2D = new int*[mapHeight];
+    for (int i = 0; i < mapHeight; i++) {
+        Map2D[i] = new int[mapWidth];
+        for (int j = 0; j < mapWidth; j++) {
+            ss >> Map2D[i][j];
         }
-        ss >> timerPausedTime;
     }
+    ss >> timerPausedTime;
+    return *this;
+}
 };
 
 class Loader
@@ -43,9 +51,8 @@ class Loader
     string file;
 
     public:
-        State loadedState;
         State loadState();
-        void saveStateToFile(State gameState);
+        string saveStateToFile(State gameState);
         Loader();
         ~Loader();
 };

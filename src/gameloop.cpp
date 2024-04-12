@@ -14,10 +14,10 @@
 
 using namespace std;
 
-Timer::Timer(bool *thePis_writing, int theRow, int theCol)
+Timer::Timer(bool *thePis_writing, int theRow, int theCol, double thePausedTime)
 {
     time = 0;
-    paused_time = 0;
+    paused_time = thePausedTime;
     is_writing = thePis_writing;
     timer_row = theRow;
     timer_col = theCol;
@@ -36,16 +36,14 @@ void Timer::pause()
     stop();
 }
 
-double Timer::stop()
+string Timer::stop()
 {
     is_running = false;
     if (timer.joinable())
     {
         timer.join();
     }
-    double returned = time;
-    time = 0;
-    return returned;
+    return to_string(time).substr(0, 6);
 }
 
 Timer::~Timer()
@@ -70,8 +68,8 @@ void Timer::job()
             }
         }
     }
-    auto time_elapsed = chrono::system_clock::now() - start_time;
-    time = time_elapsed.count();
+    // auto time_elapsed = chrono::system_clock::now() - start_time;
+    // time = time_elapsed.count();
 }
 
 Gameloop::Gameloop()
@@ -99,16 +97,16 @@ Gameloop::~Gameloop()
 bool Gameloop::intersection(int pos_x, int pos_y, int **themap, bool the_first_move)
 {
     int num = 0;
-    if (themap[pos_y + 1][pos_x] == 1 || themap[pos_y + 1][pos_x] == 8)
+    if (themap[pos_y + 1][pos_x] == 0)
         num++;
-    if (themap[pos_y - 1][pos_x] == 1 || themap[pos_y - 1][pos_x] == 8)
+    if (themap[pos_y - 1][pos_x] == 0)
         num++;
-    if (themap[pos_y][pos_x + 1] == 1 || themap[pos_y][pos_x + 1] == 8)
+    if (themap[pos_y][pos_x + 1] == 0)
         num++;
-    if (themap[pos_y][pos_x - 1] == 1 || themap[pos_y][pos_x - 1] == 8)
+    if (themap[pos_y][pos_x - 1] == 0)
         num++;
 
-    if (num >= 3 && the_first_move == false)
+    if (num <= 1 && the_first_move == false)
         return 0;
     return 1;
 }
@@ -146,17 +144,19 @@ vector<int> Gameloop::checkwall(char playerinput, int *pos, int **themap, int wi
 
 int Gameloop::run(State loadedGameState)
 {
+
     int winCols = getWinCols();
     int winRows = getWinRows();
-    bool the_first_move;
-    bool choice;
+    bool the_first_move; // check if player had moved since key pressed
+    bool choice; // check if player had choosen the direction of breaking wall
+    bool is_writing = false; // check if the screen is writing
 
+    Maze2D maze(winCols / 2 - 2, (winRows % 2 == 0 ? winRows + 1 : winRows) - 2, rand(), loadedGameState.Map2D);
+    Timer timer(&is_writing, 0, winCols / 2 - 7, stod(loadedGameState.timerPausedTime));
+    gameState = loadedGameState;
     clearScreen();
-    Maze2D maze(winCols / 2 - 2, (winRows % 2 == 0 ? winRows + 1 : winRows) - 2, 0, nullptr);
     maze.printMap();
     
-    bool is_writing = false;
-    Timer timer(&is_writing, 0, winCols / 2 - 7);
     timer.start();
     while (true)
     {
@@ -177,7 +177,14 @@ int Gameloop::run(State loadedGameState)
             gameState.Map2D = maze.map2D;
             gameState.mapHeight = maze.result_height;
             gameState.mapWidth = maze.result_width;
-            loader.saveStateToFile(gameState);
+            gameState.winCols = winCols;
+            gameState.winRows = winRows;
+            string savedTo = loader.saveStateToFile(gameState);
+            clearScreen();
+            frame(winCols, winRows);
+            string m = "Game saved to " + savedTo + ". Press any key to continue.";
+            printAt(winCols/2 - m.length()/2, winRows/2, m);
+            getch();
             return 2;
         }
 
@@ -201,7 +208,6 @@ int Gameloop::run(State loadedGameState)
                 // end the game when the player arrive to the "end"
                 if (maze.map2D[gameState.position[0]][gameState.position[1]] == 2)
                 {
-                    cout << "you win the game" << endl;
                     timer.stop();
                     return 0;
                 }
@@ -284,8 +290,6 @@ int Gameloop::run(State loadedGameState)
                 break;
         }
     }
-    clearScreen();
-    cout << "Maze dimension in chars: " << maze.result_width << "x" << maze.result_height << endl;
 
     return 0;
 }

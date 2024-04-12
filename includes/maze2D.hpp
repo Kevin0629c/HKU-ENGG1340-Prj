@@ -14,6 +14,7 @@ class Maze2D
     int width; 
     int height;
     int seed;
+    bool isMapProvided = false;
 
     /* ------------- Private ------------ */
     int **grid2D;

@@ -11,7 +11,9 @@ using namespace std;
 int main()
 {
     // check terminal size
-    if (getWinRows() < 0 || getWinCols() < 0)
+    int winCols = getWinCols();
+    int winRows = getWinRows();
+    if (winRows < 0 || winCols < 0)
     {
         cout << "Terminal size too small. Please resize to at least 50x20." << endl;
         return 1;
@@ -21,7 +23,7 @@ int main()
     toggleEcho();
 
     Gameloop game;
-    State gameState;
+    State defaultGame;
     Loader loader;
     int game_result = -1;
     while (true)
@@ -33,13 +35,28 @@ int main()
         {
             return 1; // Quit the game
         }
-        else if (response == 1)
+        if (response == 1)
         {
-            game_result = game.run(loader.loadState());
+            State loadedState = loader.loadState();
+            if (loadedState.Map2D == nullptr)
+            {
+                string m = "Loaded file is not a state. Try saving a game by hitting P in-game.";
+                printAt(winCols/2 - m.length()/2, winRows/2, m);
+                getch();
+                continue;
+            }
+            if (loadedState.winCols == winCols && loadedState.winRows == winRows)
+            {
+                game_result = game.run(loadedState);
+            } else {
+                string m = "Map size does not match terminal. Please resize terminal to " + to_string(loadedState.winCols) + "x" + to_string(loadedState.winRows);
+                printAt(winCols/2 - m.length()/2, winRows/2, m);
+                getch();
+            }
         }
         else 
         {
-            game_result = game.run(gameState);
+            game_result = game.run(defaultGame);
         }
 
         if (game_result == 0)
@@ -52,7 +69,7 @@ int main()
             cout << "You WIN!!!" << endl;
             // Handle win state
         }
-        
+
     }
 
     cursorShow();
