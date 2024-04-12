@@ -1,5 +1,6 @@
 #include "minigame.hpp"
 #include "helpers.hpp"
+
 #include <iostream>
 #include <ctime>
 #include <cstdlib>
@@ -72,6 +73,7 @@ bool Minigame::countdown(int col, int row) { // countdown timer with a bar shown
 } 
 
 bool Minigame::direction() {
+        int pos = 0;
         char answer[10];
         int arr[10];
 
@@ -105,12 +107,16 @@ bool Minigame::direction() {
 
         if ( arrows[arr[i]] == "▲") {
                 answer[i] = letter1;
+                pos += 1;
         } else if ( arrows[arr[i]] == "▼" ) {
                 answer[i] = letter2;
+                pos += 1;
         } else if ( arrows[arr[i]] == "◀" ) {
                 answer[i] = letter3;
+                pos += 1;
         } else if ( arrows[arr[i]] == "▶" ) {
                 answer[i] = letter4;
+                pos += 1;
         } else {
                 printAt(3, 3, "wrong");
         }
@@ -157,6 +163,8 @@ bool Minigame::run()
         thread countdown_thread([&]() {
                 countdown_result=countdown(winCols, winRows);
         });
+
+        int pos = 0;
 
         bool result;
         result = direction();

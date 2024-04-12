@@ -17,14 +17,15 @@ int main()
     }
 
     cursorHide();
-
+    toggleEcho();
     while (true)
     {
         PagedMenu menu;                    //Linkage with pagedmenu setting requried
         int response = menu.displayMenu();
-        if (response == -1)                           //May change to 0 according pagedmenu
+        clearScreen();
+        if (response == -1)               // System mechanism for handling user's input
         {
-            return 0; // Quit the game
+            return 1; // Quit the game
         }
         else
         {

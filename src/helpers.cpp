@@ -96,7 +96,9 @@ int getWinCols() {
     ioctl(STDOUT_FILENO, TIOCGWINSZ, &size);
     return size.ws_col;
 }
-
+/*
+    build a UI frame based on the size of console
+*/
 void frame(int winCols, int winRows) {
 
     cout << "╔";
@@ -120,4 +122,18 @@ void frame(int winCols, int winRows) {
         cout << "═";
     }
     cout << "╝" << endl;
+}
+/*
+    build a thin frame for the word inputed(used only for the menu "play" and "quit" botton)(not suitable for all words)
+*/
+void botton(int x, int y, string colors, string s )
+{
+    string top = R"(╭──────╮)";
+    string mid = R"(│      │)";
+    string bot = R"(╰──────╯)";
+
+    printAt(x-2,y-1,colors + top);
+    printAt(x-2,y,colors + mid);
+    printAt(x,y,colors + s);
+    printAt(x-2,y+1, colors + bot);    
 }

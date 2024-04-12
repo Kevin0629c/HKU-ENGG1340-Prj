@@ -18,72 +18,59 @@ PagedMenu::~PagedMenu()
 
 int PagedMenu::displayMenu()
 {
-    int response = 0;
-    int winCols = getWinCols();
-    int winRows = getWinRows();
+    int response = 0;                                                                   // response is defulted to 0 (Play)
+    int winCols = getWinCols();                                                         // console width
+    int winRows = getWinRows();                                                         // console height
 
-    using namespace std; 
-    // Add this line to specify the namespace for "cout"
+    using namespace std;
+    string top = R"(╭──────╮)";
+    string mid = R"(│      │)";
+    string bot = R"(╰──────╯)";
 
-    //int size_w = 60 , size_h = 20;
-    //int selected = 1;            //input value dont know what is this
-    //int option_count = 5;             //(just for sub sth misssing dont use this as last result)
-    //int title_pos = (option_count == 0) ? size_h * 0.5 - 1 : size_h * 0.35;
-    //string title = "Hello";            //list(menu_data.keys())[0] how to do this 
+    string play = R"(PLAY)";                                                            // the pattern of play
 
-    system("clear");
+    string quit = R"(QUIT)";                                                            // the pattern of quit
 
-        
-    cout << "╔";
-    for (int i = 0; i < winCols - 2; i++) 
-    {
-        cout << "═";
-    }
-    cout << "╗" << endl;
+    frame(winCols,winRows);                                                             // the UI frame
+    printAt(1,(winRows/2)-5,R"(         
+x        _    __  __    _     ________ _   _  ____    
+x       / \  |  \/  |  / \   |__  /_ _| \ | |/ ___|   
+x      / _ \ | |\/| | / _ \    / / | ||  \| | |  _    
+x     / ___ \| |  | |/ ___ \  / /_ | || |\  | |_| |   
+x    /_/__ \_\_|  |_/_/   \_\/____|___|_| \_|\____|__ 
+x    | __ )|  _ \| ____|  / \  | |/ / _ \| | | |_   _|
+x    |  _ \| |_) |  _|   / _ \ | ' / | | | | | | | |  
+x    | |_) |  _ <| |___ / ___ \| . \ |_| | |_| | | |  
+x    |____/|_| \_\_____/_/   \_\_|\_\___/ \___/  |_|  
+x                                                           )");                        // the title showed in UI
+
+    botton(winCols-29,(winRows/2)-5,COLOR_GREEN, play);                                // botton is a function in helers.cpp which helps 
+                                                                                       // building a thin frame around the words
+    botton(winCols-29,(winRows/2)+2,COLOR_DEFAULT,quit);                               // botton(x_coor of the word, y_coor of the word, colour , word to be showed)
+
     
-    for (int i = 1; i < winRows - 2; i++) {
-        cout << "║" ;
-        for (int j = 1; j < winCols - 1; j++){
-            cout << " ";
+
+    char userinput ;                                                                    // detect user input
+    userinput = getch();                                                                
+
+    while (userinput != 'D'&& userinput != 'd')                                         // D is the botton for confriming the choice
+    {
+
+        botton(winCols-29,(winRows/2)-5,COLOR_DEFAULT, play);                           // changes colour when playing moving their choices
+        botton(winCols-29,(winRows/2)+2,COLOR_DEFAULT,quit);
+        if (userinput == 'W' || userinput == 'w')                                       // the play botton is on the top so "W" is used to move to the top 
+        {
+            botton(winCols-29,(winRows/2)-5,COLOR_GREEN, play);                         // the botton of "PLAY" changes to green when player moves the choice to that
+            response = 0;                                                               // response = 0 = play
         }
-        cout << "║" << endl;
+        else if (userinput == 'S' || userinput == 's')                                  // the quit botton is at the bottom so "S" is used 
+        {
+            botton(winCols-29,(winRows/2)+2,COLOR_RED,quit);
+            response = -1;                                                              // response = -1 = quit
+        }
+        userinput = getch();                                                            // getting the next userinput
     }
 
-    cout << "╚";
-    for (int i = 0; i < winCols - 2; i++) 
-    {
-        cout << "═";
-    }
-    cout << "╝" << endl;
-
-    
-    
-    printAt(1,1, "PLAY");
-    printAt(1,2, "QUIT");
-    printAt(1,2, COLOR_BG_RED + "QUIT");
-    
-
-    char userinput;
-    userinput = getch(); //
-    if (userinput == 'A' || userinput == 'a') // Userinput "w" instead of "a"?
-    {
-        printAt(0,1,"PLAY");          // printAt(x-cor, y-cor, std::string)               
-        response = 1;
-    }
-    else if (userinput == 'D' || userinput == 'd') 
-    {
-        printAt(0,2,"QUIT");
-        response = 0;
-    }
-    return response;
+    return response;                                                                    // outputing the choice of player
 }
 
-/*     Main menu structure fyr:
-|- Play
-|- Gamemodes
-|  |- Classic 
-|  |- Squares 
-|- Options** 
-|  |- Color customization
-|- Quit
-*/
