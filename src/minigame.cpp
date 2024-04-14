@@ -31,6 +31,11 @@ bool Minigame::countdown(int col, int row)
 
         for (int i = 0; i <= 10; i++)
         {
+                if (stopCountdown)
+                {
+                        break;
+                }
+
                 if (duration - i >= 10)
                 {
                         timer = "> " + to_string(duration - i) + " <";
@@ -56,11 +61,6 @@ bool Minigame::countdown(int col, int row)
                 printAt(midcol_bar, 1, bar);
 
                 this_thread::sleep_for(chrono::seconds(1));
-
-                if (stopCountdown)
-                {
-                        break;
-                }
         }
         string quote = "   Oops! Time's out   ";
         int midcol_quote = (col - quote.size()) / 2;
@@ -139,6 +139,7 @@ bool Minigame::direction()
                         string quote = "         Oops! Wrong input :(         ";
                         int midcol_quote = (col - quote.size()) / 2;
                         printAt(midcol_quote, midrow + 4, quote);
+                        stopCountdown=true;
                         this_thread::sleep_for(chrono::seconds(1));
                         return false;
                 }

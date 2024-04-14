@@ -8,7 +8,7 @@ public:
     ~Minigame();
     bool run();
     bool countdown(int winCols, int winRows);
-    bool stopCountdown=false;
+    bool stopCountdown;
     bool direction();
 };
 
