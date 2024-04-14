@@ -23,20 +23,18 @@ Minigame::~Minigame()
 bool Minigame::countdown(int col, int row)
 { // countdown timer with a bar shown //
 
-        int duration = 10;
+        bool time_out = true;
+
+        int duration = 4;
         string bar_symbol = "■ ", timer, bar;
 
         int midcol_timer = (col - 6) / 2;
-        int midcol_bar = (col - 19) / 2;
+        int midcol_bar = (col - 11) / 2;
 
-        for (int i = 0; i <= 10; i++)
+        for (int i = 0; i <= 4; i++)
         {
-                if (stopCountdown)
-                {
-                        break;
-                }
 
-                if (duration - i >= 10)
+                if (duration - i >= 4)
                 {
                         timer = "> " + to_string(duration - i) + " <";
                 }
@@ -61,29 +59,40 @@ bool Minigame::countdown(int col, int row)
                 printAt(midcol_bar, 1, bar);
 
                 this_thread::sleep_for(chrono::seconds(1));
-        }
-        string quote = "   Oops! Time's out   ";
-        int midcol_quote = (col - quote.size()) / 2;
-        printAt(midcol_quote, 1, quote);
 
-        this_thread::sleep_for(chrono::seconds(1));
-        return false;
+                if (stopCountdown==true)
+                {
+                        time_out=false;
+                        return true;
+                        break;
+                }
+        }
+
+        if (time_out==true) 
+        {
+                string quote = "   Oops! Time's out   ";
+                int midcol_quote = (col - quote.size()) / 2;
+                printAt(midcol_quote, 1, quote);
+
+                this_thread::sleep_for(chrono::seconds(1));
+                return false;
+        } 
 }
 
 bool Minigame::direction()
 {
-        char answer[10];
-        int arr[10];
+        char answer[6];
+        int arr[6];
 
         int col = getWinCols();
         int row = getWinRows();
 
-        int midcol = (col - 68) / 2;
+        int midcol = (col - 41) / 2;
         int midrow = (row - 5) / 2;
 
         string arrows[4] = {"▲", "▼", "◀", "▶"}; // randomly generate the output //
         srand(time(NULL));
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 6; i++)
         {
                 int number = rand() % 4;
                 arr[i] = number;
@@ -93,13 +102,13 @@ bool Minigame::direction()
         // int midcol_quote = (col-quote.size())/2;
         // printAt(midcol_quote, midrow+4, quote);
 
-        printAt(midcol, midrow, "╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮");
+        printAt(midcol, midrow, "╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮");
         this_thread::sleep_for(chrono::milliseconds(200));
-        printAt(midcol, midrow + 1, "│ " + arrows[arr[0]] + " │  │ " + arrows[arr[1]] + " │  │ " + arrows[arr[2]] + " │  │ " + arrows[arr[3]] + " │  │ " + arrows[arr[4]] + " │  │ " + arrows[arr[5]] + " │  │ " + arrows[arr[6]] + " │  │ " + arrows[arr[7]] + " │  │ " + arrows[arr[8]] + " │  │ " + arrows[arr[9]] + " │");
+        printAt(midcol, midrow + 1, "│ " + arrows[arr[0]] + " │  │ " + arrows[arr[1]] + " │  │ " + arrows[arr[2]] + " │  │ " + arrows[arr[3]] + " │  │ " + arrows[arr[4]] + " │  │ " + arrows[arr[5]] + " │");
         this_thread::sleep_for(chrono::milliseconds(200));
-        printAt(midcol, midrow + 2, "╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯");
+        printAt(midcol, midrow + 2, "╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯");
 
-        for (int i = 0; i < 10; ++i)
+        for (int i = 0; i < 6; ++i)
         { // turn the output into an answer list //
 
                 char letter1 = 'w';
@@ -129,9 +138,9 @@ bool Minigame::direction()
                 }
         }
 
-        string output[10] = {arrows[arr[0]], arrows[arr[1]], arrows[arr[2]], arrows[arr[3]], arrows[arr[4]], arrows[arr[5]], arrows[arr[6]], arrows[arr[7]], arrows[arr[8]], arrows[arr[9]]};
+        string output[10] = {arrows[arr[0]], arrows[arr[1]], arrows[arr[2]], arrows[arr[3]], arrows[arr[4]], arrows[arr[5]]};
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < 6; i++)
         { // check user's answer one by one //
                 char input = getch();
                 if (input != answer[i])
@@ -139,18 +148,18 @@ bool Minigame::direction()
                         string quote = "         Oops! Wrong input :(         ";
                         int midcol_quote = (col - quote.size()) / 2;
                         printAt(midcol_quote, midrow + 4, quote);
-                        stopCountdown=true;
                         this_thread::sleep_for(chrono::seconds(1));
                         return false;
                 }
                 else if (input == answer[i])
                 { // if user's input is correct //
                         output[i] = "✔";
-                        printAt(midcol, midrow, "╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮");
-                        printAt(midcol, midrow + 1, "│ " + output[0] + " │  │ " + output[1] + " │  │ " + output[2] + " │  │ " + output[3] + " │  │ " + output[4] + " │  │ " + output[5] + " │  │ " + output[6] + " │  │ " + output[7] + " │  │ " + output[8] + " │  │ " + output[9] + " │");
-                        printAt(midcol, midrow + 2, "╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯");
-                        if (i == 9)
+                        printAt(midcol, midrow, "╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮  ╭───╮");
+                        printAt(midcol, midrow + 1, "│ " + output[0] + " │  │ " + output[1] + " │  │ " + output[2] + " │  │ " + output[3] + " │  │ " + output[4] + " │  │ " + output[5] + " │");
+                        printAt(midcol, midrow + 2, "╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯  ╰───╯");
+                        if (i == 5)
                         {
+                                stopCountdown=true;
                                 return true;
                         }
                 }
