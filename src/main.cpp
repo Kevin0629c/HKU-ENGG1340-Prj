@@ -50,7 +50,7 @@ int main()
             {
                 game_result = game.run(loadedState);
             } else {
-                string m = "Map size does not match terminal. Please resize terminal to " + to_string(loadedState.winCols) + "x" + to_string(loadedState.winRows);
+                string m = "Loadde game's map size does not match terminal. Please resize terminal to " + to_string(loadedState.winCols) + "x" + to_string(loadedState.winRows);
                 printAt(winCols/2 - m.length()/2, winRows/2, m);
                 getch();
             }
