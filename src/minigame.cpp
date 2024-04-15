@@ -174,12 +174,13 @@ bool Minigame::run()
 
         frame(winCols, winRows);
 
-        string quote = "Press any key to start"; // start screen //
+        /* string quote = "Press any key to start"; // start screen //
         int mid_col = (winCols - quote.size()) / 2;
         int mid_row = (winRows - 1) / 2;
         printAt(mid_col, mid_row, quote);
 
-        printAt(mid_col, mid_row, "                      ");
+        printAt(mid_col, mid_row, "                      "); */
+
 
         bool result;
         bool countdown_result = true; // allow countdown function and the game run at the same time using thread //
@@ -205,3 +206,46 @@ bool Minigame::run()
 
         return 0;
 }
+
+/* 
+     __
+    '. \
+     '- \
+      / /_         .---.
+     / | \\,.\/--.//    )
+     |  \//        )/  /
+      \  ' ^ ^    /    )____.----..  6
+       '.____.    .___/            \._)
+          .\/.                      )
+           '\                       /
+           _/ \/    ).        )    (
+          /#  .!    |        /\    /      -Morfina-
+          \  C// #  /'-----''/ #  /
+       .   'C/ |    |    |   |    |mrf  ,
+       \), .. .'OOO-'. ..'OOO'OOO-'. ..\(,
+*/
+
+/* 
+string cartoon 
+string bubble = "follow my steps!"
+
+*/
+
+/*
+             ___.-~"~-._   __....__
+           .'    `    \ ~"~        ``-.
+          /` _      )  `\              `\
+         /`  a)    /     |               `\
+        :`        /      |                 \
+   <`-._|`  .-.  (      /   .            `;\\          _.-~"~-.
+    `-. `--'_.'-.;\___/'   .      .       | \\       ;`a)   )  `\
+ _     /:--`     |        /     /        .'  \\     /      /    |~=-=--.
+("\   /`/        |       '     '         /    ;`'._/ ,;_  |    /        ".
+`\'\_/`/         .\     /`~`=-.:        /     ``.,__/ ` `| `"~`           \
+  `._.'          /`\    |      `\      /(            .--'   /      /      |\
+                /  /\   |        `Y   /  \          /  ____/\     |      / `"
+          jgs  J  /  Y  |         |  /`\  \        /__/  |  |`-...-\    |
+              /  |   |  |         |  |  |  |       '""   |  |      |`\  |
+             "---"  /___|        /___|  /__|             /__|     /__/__|
+                    '"""         '"""  '"""              '"""    '"""'""
+*/
