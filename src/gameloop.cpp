@@ -224,7 +224,10 @@ int Gameloop::run(State loadedGameState)
                     timer.pause();
                     clearScreen();
                     int minigame_result = Minigame().run();
-                    cout << "minigame_result: " << minigame_result << endl;
+                    
+                    clearScreen();
+                    maze.printMap();
+
                     if (minigame_result == 1)
                     {
                         // win can get ability to break the wall
